@@ -1,6 +1,6 @@
 # Threat Hunting Playbooks — Financial Services & Insurance Sector (Splunk Edition)
 
-A set of 15 step-by-step threat hunting playbooks tailored to the tactics most commonly used against large insurance / wealth-management / financial-services firms — agent and advisor networks, policyholder PII, wire and withdrawal capability, high-net-worth clients, and regulated environments.
+A set of 15 step-by-step threat hunting playbooks tailored to the tactics most commonly used against large insurance / wealth-management / financial-services firms, agent and advisor networks, policyholder PII, wire and withdrawal capability, high-net-worth clients, and regulated environments.
 
 Every playbook includes plain-English context, prerequisites, numbered steps with real **Splunk SPL** queries, "what normal vs. suspicious looks like" guidance, and clear escalation criteria. Written so a first-time threat hunter can pick a playbook and run it.
 
