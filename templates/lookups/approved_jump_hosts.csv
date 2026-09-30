@@ -1,0 +1,3 @@
+host,is_jump_host
+jumphost01.corp.local,1
+jumphost02.corp.local,1

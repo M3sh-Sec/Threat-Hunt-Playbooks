@@ -1,0 +1,35 @@
+# 15. Executive/HNW Client Targeting & Reconnaissance (T1591, T1598.003)
+
+[← Back to index](../README.md)
+
+**Plain-English summary:** Attackers research specific executives/advisors/high-net-worth clients before a highly targeted attack.
+
+### Prerequisites
+- Splunk access to `index=email` and a lookup `executive_watchlist.csv` (columns: `email`, `name`, `title`). Breach-monitoring feed data, if ingested, as `index=threatintel sourcetype=breach_feed`.
+
+### Step-by-Step
+1. **Build/confirm your watch-list lookup** (one-time setup, coordinate with HR/executive protection for the list).
+2. **Check breach-monitoring feed for watch-list credentials.**
+   ```spl
+   index=threatintel sourcetype=breach_feed earliest=-30d
+   | lookup executive_watchlist.csv email OUTPUT name, title
+   | where isnotnull(name)
+   | table _time, email, name, title, breach_source
+   ```
+3. **Filter email security logs for named-recipient targeting.**
+   ```spl
+   index=email action="blocked" OR action="quarantined" earliest=-7d
+   | lookup executive_watchlist.csv recipient AS email OUTPUT name, title
+   | where isnotnull(name)
+   | table _time, sender, recipient, name, title, subject, verdict
+   ```
+4. **Impersonation profile search** — this is a manual step outside Splunk (search LinkedIn/social platforms directly for watch-list names), but log any findings into a lookup (`impersonation_findings.csv`) for tracking.
+
+### If You Find Something
+- **Watch-list member's credentials found in a fresh breach dump, or live impersonation profile found:** Escalate to IR, notify the individual directly, recommend credential rotation and hardware MFA.
+- **A single targeted phishing attempt that was blocked:** Log it, share as an awareness heads-up, no urgent escalation if blocked successfully.
+
+### Turn it into an alert
+Save Step 3's query as a daily alert.
+
+---
