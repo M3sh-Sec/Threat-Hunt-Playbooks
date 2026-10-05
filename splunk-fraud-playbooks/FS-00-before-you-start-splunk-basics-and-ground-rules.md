@@ -1,6 +1,4 @@
-# 0. Before You Start: Splunk Basics & Ground Rules
-
-[← Back to index](../README.md)
+# FS-00 — Before You Start: Splunk Basics & Ground Rules
 
 ### A 5-minute SPL primer (skip if you already know Splunk)
 - Every search starts by picking data: `index=email sourcetype=proofpoint` — this says "look in the email index, at Proofpoint data."
@@ -37,5 +35,7 @@ Adjust these to your real environment before running anything:
 | Call center CRM | `index=callcenter` | `custom:crm` |
 | API gateway | `index=api` | `apigee`, `kong`, `aws:apigateway` |
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

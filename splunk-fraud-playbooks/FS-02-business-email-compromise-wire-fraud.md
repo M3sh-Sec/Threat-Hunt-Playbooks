@@ -1,6 +1,6 @@
-# 2. Business Email Compromise / Wire Fraud (T1586, T1534)
+# FS-02 — Business Email Compromise / Wire Fraud
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1586, T1534
 
 **Plain-English summary:** An attacker either compromises or convincingly impersonates an executive or advisor's email account and asks someone to move money or change payment/beneficiary details.
 
@@ -51,5 +51,7 @@
 ### Turn it into an alert
 Save Step 3's query as an alert running every hour: "if number of results > 0" → notify fraud team distribution list directly (this one is urgent enough to bypass a queue).
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

@@ -1,6 +1,6 @@
-# 13. Malicious Macro / HTA Delivery via Document Attachments (T1204.002, T1566.001)
+# FS-13 — Malicious Macro / HTA Delivery via Document Attachments
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1204.002, T1566.001
 
 **Plain-English summary:** A Word/Excel attachment (often disguised as a claim form or medical record) runs malicious code when opened with macros enabled.
 
@@ -36,5 +36,7 @@
 ### Turn it into an alert
 Save Step 1's query as a real-time or 15-minute alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

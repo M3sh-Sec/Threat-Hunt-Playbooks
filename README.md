@@ -1,72 +1,52 @@
-# Threat Hunting Playbooks — Financial Services & Insurance Sector (Splunk Edition)
+# Threat Hunting Playbooks: Financial Services & Insurance
 
-A set of 15 step-by-step threat hunting playbooks tailored to the tactics most commonly used against large insurance / wealth-management / financial-services firms, agent and advisor networks, policyholder PII, wire and withdrawal capability, high-net-worth clients, and regulated environments.
+Two complementary collections of threat hunts for insurance, wealth-management, financial-services and distribution companies, packaged together:
 
-Every playbook includes plain-English context, prerequisites, numbered steps with real **Splunk SPL** queries, "what normal vs. suspicious looks like" guidance, and clear escalation criteria. Written so a first-time threat hunter can pick a playbook and run it.
+| Collection | What it covers | Platforms | Audience |
+|---|---|---|---|
+| [**Splunk fraud & business-process playbooks**](splunk-fraud-playbooks/README.md) (FS-00 to FS-15) | BEC and wire fraud, call-center vishing, SIM swap, credential stuffing, insider misuse, vendor access, customer-portal and API abuse, executive targeting | Splunk (SPL) | First-time hunters, with every step spelled out |
+| [**Multi-platform hunts**](multi-platform-hunts/README.md) (H-00 to H-17) | DLL side-loading; persistence on Windows, Linux, AWS, Azure/Entra, GCP, OpenShift and Salesforce; the top 25 techniques of Scattered Spider, ShinyHunters and ransomware crews targeting the sector | Splunk, CrowdStrike Falcon / NG-SIEM, Microsoft Sentinel / Defender, Elastic | Experienced hunters |
 
-> **Before running anything:** index, sourcetype, and field names throughout these playbooks are illustrative placeholders (e.g. `index=email`, `sourcetype=proofpoint`). Adjust them to match your actual Splunk environment — see [`playbooks/00-before-you-start-splunk-basics-ground-rules.md`](playbooks/00-before-you-start-splunk-basics-ground-rules.md) for how to confirm real index/sourcetype names, plus SPL basics and ground rules that apply to every hunt.
+> **Before running anything:** index, sourcetype, table and field names are illustrative. Map them to your environment first. See [FS-00](splunk-fraud-playbooks/FS-00-before-you-start-splunk-basics-and-ground-rules.md) for Splunk and the [appendix](multi-platform-hunts/appendix-cadence-field-mappings-sources.md) for the other platforms.
 
-## Contents
+## Where the collections overlap
 
-| # | Playbook | MITRE ATT&CK |
-|---|---|---|
-| 0 | [Before You Start: Splunk Basics & Ground Rules](playbooks/00-before-you-start-splunk-basics-ground-rules.md) | — |
-| 1 | [Spearphishing for Credential Theft](playbooks/01-spearphishing-for-credential-theft-t1566001-t1566002.md) | T1566.001, T1566.002 |
-| 2 | [Business Email Compromise / Wire Fraud](playbooks/02-business-email-compromise-wire-fraud-t1586-t1534.md) | T1586, T1534 |
-| 3 | [Valid Account Abuse / Credential Stuffing](playbooks/03-valid-account-abuse-credential-stuffing-t1078-t1110004.md) | T1078, T1110.004 |
-| 4 | [Cloud Identity / OAuth Token Abuse](playbooks/04-cloud-identity-oauth-token-abuse-t1550001-t1528.md) | T1550.001, T1528 |
-| 5 | [Ransomware Precursor Activity](playbooks/05-ransomware-precursor-activity-t1486-t1490-ta0040.md) | T1486, T1490, TA0040 |
-| 6 | [Third-Party / Vendor Supply Chain Compromise](playbooks/06-third-party-vendor-supply-chain-compromise-t1195.md) | T1195 |
-| 7 | [Insider Threat / Privileged Misuse](playbooks/07-insider-threat-privileged-misuse-t1078002.md) | T1078.002 |
-| 8 | [Web Application Attacks Against Customer Portals](playbooks/08-web-application-attacks-against-customer-portals-t1190.md) | T1190 |
-| 9 | [Vishing / Call-Center Social Engineering](playbooks/09-vishing-call-center-social-engineering-t1598-t1656.md) | T1598, T1656 |
-| 10 | [SIM Swap Enabled MFA Bypass](playbooks/10-sim-swap-enabled-mfa-bypass-t1621-t1451.md) | T1621, T1451 |
-| 11 | [Lateral Movement via RDP/SMB](playbooks/11-lateral-movement-via-rdpsmb-t1021001-t1021002.md) | T1021.001, T1021.002 |
-| 12 | [Data Exfiltration via Cloud Storage / Personal Accounts](playbooks/12-data-exfiltration-via-cloud-storage-personal-accounts-t1567.md) | T1567 |
-| 13 | [Malicious Macro / HTA Delivery via Document Attachments](playbooks/13-malicious-macro-hta-delivery-via-document-attachments-t1204002-t1566001.md) | T1204.002, T1566.001 |
-| 14 | [API Abuse for Automated Account Enumeration/Takeover](playbooks/14-api-abuse-for-automated-account-enumerationtakeover.md) | — |
-| 15 | [Executive/HNW Client Targeting & Reconnaissance](playbooks/15-executivehnw-client-targeting-reconnaissance-t1591-t1598003.md) | T1591, T1598.003 |
+Use the FS playbook for the business-process angle (policy-admin, call-center and payment data) and the H hunt for endpoint, identity-provider and cloud telemetry.
 
-See also: [General Program Notes](GENERAL-NOTES.md) and the [Hunt Documentation Template](templates/documentation-template.md).
+| Theme | Splunk fraud playbook | Related FS playbook | Multi-platform hunts |
+|---|---|---|---|
+| Phishing, vishing and identity takeover | [FS-01 Spearphishing](splunk-fraud-playbooks/FS-01-spearphishing-for-credential-theft.md) | [FS-09 Call-center vishing](splunk-fraud-playbooks/FS-09-vishing-call-center-social-engineering.md) | [H-09 Identity takeover](multi-platform-hunts/H-09-identity-takeover-vishing-mfa-fatigue-aitm-and-rogue-mfa-devices.md) |
+| Credential stuffing / valid accounts | [FS-03 Credential stuffing](splunk-fraud-playbooks/FS-03-valid-account-abuse-credential-stuffing.md) |  | [H-09 Identity takeover](multi-platform-hunts/H-09-identity-takeover-vishing-mfa-fatigue-aitm-and-rogue-mfa-devices.md) |
+| OAuth / app-consent abuse | [FS-04 OAuth token abuse](splunk-fraud-playbooks/FS-04-cloud-identity-oauth-token-abuse.md) |  | [H-05 Azure/Entra](multi-platform-hunts/H-05-azure-and-entra-id-persistence.md), [H-08 Salesforce](multi-platform-hunts/H-08-salesforce-persistence-and-data-theft.md), [H-13 Accounts and trust](multi-platform-hunts/H-13-account-and-trust-persistence-new-accounts-privileged-groups-rogue-idps-and.md) |
+| MFA bypass | [FS-10 SIM swap](splunk-fraud-playbooks/FS-10-sim-swap-enabled-mfa-bypass.md) |  | [H-09 Identity takeover](multi-platform-hunts/H-09-identity-takeover-vishing-mfa-fatigue-aitm-and-rogue-mfa-devices.md) |
+| Customer portal / exposed apps | [FS-08 Web app attacks](splunk-fraud-playbooks/FS-08-web-application-attacks-against-customer-portals.md) | [FS-14 API abuse](splunk-fraud-playbooks/FS-14-api-abuse-for-automated-account-enumerationtakeover.md) | [H-10 Exposed services](multi-platform-hunts/H-10-exploited-public-facing-apps-and-external-remote-services.md) |
+| Remote access tools | [FS-05 Ransomware precursors (step 3)](splunk-fraud-playbooks/FS-05-ransomware-precursor-activity.md) |  | [H-11 RMM and tunnels](multi-platform-hunts/H-11-remote-access-software-and-tunnels.md) |
+| Lateral movement | [FS-11 RDP/SMB](splunk-fraud-playbooks/FS-11-lateral-movement-via-rdpsmb.md) |  | [H-16 Discovery and lateral](multi-platform-hunts/H-16-discovery-and-lateral-movement.md) |
+| Exfiltration | [FS-12 Cloud storage exfil](splunk-fraud-playbooks/FS-12-data-exfiltration-via-cloud-storage-personal-accounts.md) | [FS-07 Insider misuse](splunk-fraud-playbooks/FS-07-insider-threat-privileged-misuse.md) | [H-17 Exfil and impact](multi-platform-hunts/H-17-collection-exfiltration-and-ransomware-precursors.md) |
+| Ransomware precursors | [FS-05 Ransomware precursors](splunk-fraud-playbooks/FS-05-ransomware-precursor-activity.md) |  | [H-14 Defense evasion](multi-platform-hunts/H-14-defense-evasion-edr-tampering-log-clearing-and-rogue-cloud-vms.md), [H-17 Exfil and impact](multi-platform-hunts/H-17-collection-exfiltration-and-ransomware-precursors.md) |
+
+Hunts with no counterpart: FS-02 (BEC/wire fraud), FS-06 (vendor supply chain), FS-13 (malicious macros), FS-15 (executive/HNW targeting); H-01 to H-04, H-06, H-07 (side-loading and cross-platform persistence), H-12 (LOLBin execution) and H-15 (credential access).
 
 ## Repository structure
 
 ```
 .
-├── README.md                          # this file
-├── GENERAL-NOTES.md                   # program-level guidance (cadence, prioritization, ES notes)
-├── playbooks/                         # one file per playbook
-│   ├── 00-before-you-start-splunk-basics-ground-rules.md
-│   ├── 01-spearphishing-for-credential-theft-t1566001-t1566002.md
-│   ├── ...
-│   └── 15-executivehnw-client-targeting-reconnaissance-t1591-t1598003.md
-└── templates/
-    ├── documentation-template.md      # copy this for every hunt you run
-    └── lookups/                       # starter CSV templates referenced by the SPL queries
-        ├── legit_domains.csv
-        ├── lookalike_domains.csv
-        ├── vendor_access_inventory.csv
-        ├── approved_jump_hosts.csv
-        ├── approved_software.csv
-        ├── hr_departures.csv
-        ├── vip_policy_accounts.csv
-        ├── verified_publishers.csv
-        ├── partner_integration_profile.csv
-        └── executive_watchlist.csv
+├── README.md                     ← you are here
+├── GENERAL-NOTES.md              ← cadence and program guidance for both collections
+├── splunk-fraud-playbooks/       ← FS-00 … FS-15, one file per playbook
+├── multi-platform-hunts/         ← H-00 … H-17, threat landscape, appendix
+├── templates/
+│   ├── documentation-template.md ← fill in for every hunt
+│   └── lookups/                  ← empty CSV headers for the lookups the hunts reference
+├── .gitignore                    ← keeps populated lookup data out of Git
+└── LICENSE                       ← MIT
 ```
 
 ## Getting started
 
-1. Read [`playbooks/00-before-you-start-splunk-basics-ground-rules.md`](playbooks/00-before-you-start-splunk-basics-ground-rules.md) first — it covers SPL basics, ground rules, and the index/sourcetype naming assumptions used throughout.
-2. Upload the CSV files in `templates/lookups/` into Splunk as lookup table files (Settings > Lookups > Lookup table files) and populate them with your organization's real data before running queries that reference them.
-3. Start with Playbooks 1, 3, 5, and 9 — they have the clearest signals and are the most common attack paths against this sector.
-4. Use [`templates/documentation-template.md`](templates/documentation-template.md) to log every hunt you run.
-5. Once a hunt is validated (low false-positive rate), save it as a Splunk **Alert** per the "Turn it into an alert" note at the end of each playbook.
+1. Read [FS-00](splunk-fraud-playbooks/FS-00-before-you-start-splunk-basics-and-ground-rules.md) (Splunk basics and ground rules) and [H-00](multi-platform-hunts/H-00-how-to-use.md) (hunt loop and query conventions).
+2. Copy `templates/lookups/` to `lookups/`, populate the files you need, and upload them to your SIEM. The `lookups/` folder is git-ignored so real data is never committed.
+3. Pick hunts by priority: the weekly P1 set is listed in the [appendix cadence table](multi-platform-hunts/appendix-cadence-field-mappings-sources.md); for the FS series start with FS-01, FS-03, FS-05 and FS-09.
+4. Record every run with the [documentation template](templates/documentation-template.md) and convert validated hunts into scheduled detections.
 
-## Contributing
-
-These playbooks are meant to evolve. If you tune a query for your environment, add a detection, or find a false-positive pattern worth documenting, consider opening a pull request so the team benefits. Suggested additions: real index/sourcetype mappings for your environment (as a separate, internal-only config reference — do not commit real production index names, internal hostnames, or actual customer/vendor data to a public repo), new playbooks for emerging tactics, and dashboards built from the saved searches.
-
-## Disclaimer
-
-These playbooks are generic starting points based on publicly known attacker tactics common to the financial services and insurance sector. They are not based on any specific company's actual environment, infrastructure, or incident history. Field names, index names, and thresholds must be validated and tuned against your own environment before operational use.
+Threat intelligence in the multi-platform collection is current as of October 5, 2026; sources are listed in the appendix.

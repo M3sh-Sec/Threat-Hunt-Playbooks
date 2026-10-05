@@ -1,6 +1,6 @@
-# 10. SIM Swap Enabled MFA Bypass (T1621, T1451)
+# FS-10 — SIM Swap Enabled MFA Bypass
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1621, T1451
 
 **Plain-English summary:** An attacker gets a victim's phone number ported to a SIM they control, letting them receive SMS-based one-time passcodes.
 
@@ -47,5 +47,7 @@
 ### Turn it into an alert
 Save Step 2's query as an hourly alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

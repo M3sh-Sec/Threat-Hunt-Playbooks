@@ -1,6 +1,6 @@
-# 5. Ransomware Precursor Activity (T1486, T1490, TA0040)
+# FS-05 — Ransomware Precursor Activity
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1486, T1490, TA0040
 
 **Plain-English summary:** Before ransomware encrypts files, attackers usually delete backups and explore the network for days-to-weeks. Catching this before encryption is the goal.
 
@@ -52,5 +52,7 @@
 ### Turn it into an alert
 Save Step 1's query as a **real-time or 15-minute scheduled alert** — this is the single highest-value alert in this entire document given how rarely it fires legitimately.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

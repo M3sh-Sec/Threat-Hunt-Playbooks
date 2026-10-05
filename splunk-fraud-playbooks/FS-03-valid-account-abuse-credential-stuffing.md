@@ -1,6 +1,6 @@
-# 3. Valid Account Abuse / Credential Stuffing (T1078, T1110.004)
+# FS-03 — Valid Account Abuse / Credential Stuffing
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1078, T1110.004
 
 **Plain-English summary:** Attackers try leaked email/password pairs from other companies' breaches against your customer or agent login portal.
 
@@ -56,5 +56,7 @@
 ### Turn it into an alert
 Save Step 3's query as a daily alert: "if number of results > 0."
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

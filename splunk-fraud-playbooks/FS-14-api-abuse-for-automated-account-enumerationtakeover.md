@@ -1,6 +1,4 @@
-# 14. API Abuse for Automated Account Enumeration/Takeover
-
-[← Back to index](../README.md)
+# FS-14 — API Abuse for Automated Account Enumeration/Takeover
 
 **Plain-English summary:** Attackers script requests against your mobile app/partner APIs to guess valid member numbers or abuse password-reset functions.
 
@@ -47,5 +45,7 @@
 ### Turn it into an alert
 Save Step 2's query as an hourly alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

@@ -1,6 +1,6 @@
 # Hunt Documentation Template
 
-Copy this block for every hunt you run and store it in your team's ticketing system or a shared log.
+Copy this block for every hunt you run (either collection) and store it in your ticketing system or a shared log.
 
 ```
 Hunt name / Playbook #:
@@ -8,7 +8,7 @@ Date run:
 Analyst name:
 Time range searched (earliest/latest):
 Indexes/sourcetypes used:
-SPL query run (paste exact query):
+Query run (platform + exact query) (paste exact query):
 Number of results:
 Summary of findings:
 False positives identified (and why):

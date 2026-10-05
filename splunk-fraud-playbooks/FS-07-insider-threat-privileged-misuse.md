@@ -1,6 +1,6 @@
-# 7. Insider Threat / Privileged Misuse (T1078.002)
+# FS-07 — Insider Threat / Privileged Misuse
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1078.002
 
 **Plain-English summary:** An employee/agent uses legitimate access to look at or take data they have no business reason to access.
 
@@ -53,5 +53,7 @@
 ### Turn it into an alert
 Save Step 4's query as a daily alert (requires `hr_departures.csv` to be refreshed regularly — arrange a feed or manual weekly update with HR).
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

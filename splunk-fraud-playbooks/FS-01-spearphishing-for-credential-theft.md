@@ -1,6 +1,6 @@
-# 1. Spearphishing for Credential Theft (T1566.001 / T1566.002)
+# FS-01 — Spearphishing for Credential Theft
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1566.001, T1566.002
 
 **Plain-English summary:** Attackers send fake emails (pretending to be IT, DocuSign, or an internal portal) to trick an advisor or employee into typing their password into a fake login page.
 
@@ -56,5 +56,7 @@
 ### Turn it into an alert
 Save Step 4's query as a Splunk **Alert**: trigger "if number of results > 0", run every 4 hours, send email/Slack to your SOC channel.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

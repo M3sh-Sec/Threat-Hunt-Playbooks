@@ -1,6 +1,6 @@
-# 15. Executive/HNW Client Targeting & Reconnaissance (T1591, T1598.003)
+# FS-15 — Executive/HNW Client Targeting & Reconnaissance
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1591, T1598.003
 
 **Plain-English summary:** Attackers research specific executives/advisors/high-net-worth clients before a highly targeted attack.
 
@@ -32,4 +32,7 @@
 ### Turn it into an alert
 Save Step 3's query as a daily alert.
 
+
 ---
+
+[← Collection index](README.md) · [Repository home](../README.md)

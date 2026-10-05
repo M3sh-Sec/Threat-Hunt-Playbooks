@@ -1,6 +1,6 @@
-# 11. Lateral Movement via RDP/SMB (T1021.001 / T1021.002)
+# FS-11 — Lateral Movement via RDP/SMB
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1021.001, T1021.002
 
 **Plain-English summary:** An attacker with a foothold on one machine "hops" to others using RDP or SMB.
 
@@ -43,5 +43,7 @@
 ### Turn it into an alert
 Save Step 1's query as a 15-minute scheduled alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

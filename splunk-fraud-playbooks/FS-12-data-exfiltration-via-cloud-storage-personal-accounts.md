@@ -1,6 +1,6 @@
-# 12. Data Exfiltration via Cloud Storage / Personal Accounts (T1567)
+# FS-12 — Data Exfiltration via Cloud Storage / Personal Accounts
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1567
 
 **Plain-English summary:** Someone copies large amounts of company data to a personal cloud storage account.
 
@@ -46,5 +46,7 @@
 ### Turn it into an alert
 Save Step 3's query as a daily alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

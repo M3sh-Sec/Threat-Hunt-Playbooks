@@ -1,6 +1,6 @@
-# 4. Cloud Identity / OAuth Token Abuse (T1550.001, T1528)
+# FS-04 — Cloud Identity / OAuth Token Abuse
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1550.001, T1528
 
 **Plain-English summary:** An attacker tricks a user into approving a malicious third-party app's access request, gaining persistent access to mail/files that survives a password reset.
 
@@ -44,5 +44,7 @@
 ### Turn it into an alert
 Save Step 4's query as a weekly alert: "if number of results > 0."
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

@@ -1,3 +1,1 @@
 account,vendor_name,approved_resources,expected_hours_start,expected_hours_end,expected_ip_range
-svc_tpa01,Acme Claims TPA,claims_db;document_store,6,22,203.0.113.0/24
-svc_reins02,Northstar Reinsurance,reinsurance_reporting,0,23,198.51.100.0/24

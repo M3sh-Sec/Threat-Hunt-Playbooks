@@ -1,6 +1,6 @@
-# 6. Third-Party / Vendor Supply Chain Compromise (T1195)
+# FS-06 — Third-Party / Vendor Supply Chain Compromise
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1195
 
 **Plain-English summary:** A vendor with trusted access to your environment gets compromised, and the attacker uses that trusted connection to get in.
 
@@ -46,5 +46,7 @@
 ### Turn it into an alert
 Save Step 2's query as a daily alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

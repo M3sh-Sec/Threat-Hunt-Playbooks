@@ -1,6 +1,6 @@
-# 8. Web Application Attacks Against Customer Portals (T1190)
+# FS-08 — Web Application Attacks Against Customer Portals
 
-[← Back to index](../README.md)
+**MITRE ATT&CK:** T1190
 
 **Plain-English summary:** Attackers probe your customer-facing portal for bugs that expose other customers' data or bypass authentication.
 
@@ -47,5 +47,7 @@
 ### Turn it into an alert
 Save Step 1's query as a 30-minute scheduled alert.
 
+
 ---
 
+[← Collection index](README.md) · [Repository home](../README.md)

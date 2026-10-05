@@ -1,0 +1,10 @@
+# Keep populated lookup data (PII, employee and vendor details) out of version control.
+# Work from a copy in ./lookups/ and upload it to your SIEM; only the empty templates are tracked.
+/lookups/
+*.local.csv
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
