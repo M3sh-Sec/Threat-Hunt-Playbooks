@@ -1,6 +1,6 @@
-# H-17 — Collection, exfiltration and ransomware precursors (techniques 24–25)
+# H-17 Collection, exfiltration and ransomware precursors (techniques 24-25)
 
-**Hypothesis:** The adversary is staging and exfiltrating data — from file shares, SharePoint/OneDrive or Confluence — to cloud storage with tools like rclone or MEGA, and preparing for encryption by deleting shadow copies, disabling recovery and touching ESXi hosts.
+**Hypothesis:** The adversary is staging data from file shares, SharePoint/OneDrive or Confluence and sending it to cloud storage with tools like rclone or MEGA, and preparing for encryption by deleting shadow copies, disabling recovery and touching ESXi hosts.
 
 **Data sources:** EDR process and network telemetry; proxy/firewall egress logs with byte counts; M365 Unified Audit Log (`OfficeActivity` in Sentinel, `o365:management:activity` in Splunk, `logs-o365.audit-*` in Elastic); ESXi syslog (`shell.log`, `hostd.log`, `auth.log`); vCenter events.
 
@@ -8,10 +8,10 @@
 
 1. Run 17A for exfiltration tooling and uploads to file-sharing services.
 2. Run 17B for mass downloads from SharePoint/OneDrive by a single user (thresholds relative to that user's baseline).
-3. Run 17C for ransomware precursors on Windows and ESXi. A hit here means an incident, not a hunt — page IR.
+3. Run 17C for ransomware precursors on Windows and ESXi. A hit here means an incident, not a hunt. Page IR.
 4. Correlate egress volume per host with Hunt 11 (RMM tools are often the exfil channel) and Hunt 14 (tamper events just before exfil).
 
-**Query 17A — exfiltration tools and file-sharing destinations**
+**Query 17A: exfiltration tools and file-sharing destinations**
 
 Splunk
 
@@ -55,7 +55,7 @@ FROM logs-endpoint.events.process-*, logs-endpoint.events.network-*
 | STATS c = COUNT(*), first_seen = MIN(@timestamp), cmds = VALUES(process.command_line), domains = VALUES(dns.question.name) BY host.name, user.name
 ```
 
-**Query 17B — mass download from SharePoint/OneDrive**
+**Query 17B: mass download from SharePoint/OneDrive**
 
 Splunk: `index=o365 sourcetype=o365:management:activity Workload IN (SharePoint, OneDrive) Operation IN (FileDownloaded, FileSyncDownloadedFull, FileAccessed) | bin _time span=1h | stats count dc(ObjectId) as files values(ClientIP) as ips by UserId _time | eventstats avg(files) as avg_files stdev(files) as sd by UserId | where files > 500 OR files > avg_files + 4*sd`
 
@@ -74,7 +74,7 @@ OfficeActivity
 
 Elastic ES|QL: `FROM logs-o365.audit-* | WHERE event.action IN ("FileDownloaded","FileSyncDownloadedFull") | STATS files = COUNT_DISTINCT(o365.audit.ObjectId), ips = VALUES(source.ip) BY user.id, hour = DATE_TRUNC(1 hour, @timestamp) | WHERE files > 500 | SORT files DESC`
 
-**Query 17C — ransomware precursors (Windows and ESXi)**
+**Query 17C: ransomware precursors (Windows and ESXi)**
 
 Splunk
 

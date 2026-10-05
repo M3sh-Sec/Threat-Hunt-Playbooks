@@ -1,11 +1,11 @@
-# FS-07 — Insider Threat / Privileged Misuse
+# FS-07 Insider Threat / Privileged Misuse
 
 **MITRE ATT&CK:** T1078.002
 
 **Plain-English summary:** An employee/agent uses legitimate access to look at or take data they have no business reason to access.
 
 ### Prerequisites
-- Splunk access to `index=policyadmin` (CRM/policy database access logs). Coordinate with HR for the termination/resignation list — request it as a lookup file (`hr_departures.csv`) if HR can provide it, rather than pulling it yourself.
+- Splunk access to `index=policyadmin` (CRM/policy database access logs). Coordinate with HR for the termination/resignation list. Ask them for it as a lookup file (`hr_departures.csv`) instead of pulling it yourself.
 
 ### Step-by-Step
 1. **Baseline per-role access volume** (run once, save the output as a reference, don't need to re-run often).
@@ -51,7 +51,7 @@
 - **Curiosity access to a VIP record:** Escalate to HR/Legal per your internal policy.
 
 ### Turn it into an alert
-Save Step 4's query as a daily alert (requires `hr_departures.csv` to be refreshed regularly — arrange a feed or manual weekly update with HR).
+Save Step 4's query as a daily alert (this needs `hr_departures.csv` refreshed regularly, so set up a feed or a weekly manual update with HR).
 
 
 ---

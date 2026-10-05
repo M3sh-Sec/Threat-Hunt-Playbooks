@@ -1,4 +1,4 @@
-# H-03 — Linux persistence
+# H-03 Linux persistence
 
 **Hypothesis:** An adversary with access to a Linux server (often an internet-facing app server, jump host or Kubernetes node) has added a cron job, systemd unit, SSH key, shell-profile hook, preload library or local account so that access survives reboots and credential resets.
 
@@ -24,7 +24,7 @@ Recommended auditd keys used below: `persistence_cron`, `persistence_systemd`, `
 5. Diff `authorized_keys` against your key inventory; check `/etc/ld.so.preload` exists at all (it is normally absent).
 6. For Kubernetes/OpenShift nodes, also review Hunt 7.
 
-**Query 3A — writes to Linux persistence locations by non-package-manager processes**
+**Query 3A: writes to Linux persistence locations by non-package-manager processes**
 
 Splunk (auditd)
 
@@ -79,7 +79,7 @@ FROM logs-endpoint.events.file-*
 | STATS c = COUNT(*), first_seen = MIN(@timestamp), files = VALUES(file.path) BY host.name, process.name, process.parent.name, user.name
 ```
 
-**Query 3B — persistence-creating commands and suspicious parents**
+**Query 3B: persistence-creating commands and suspicious parents**
 
 Splunk
 

@@ -1,11 +1,11 @@
-# FS-02 — Business Email Compromise / Wire Fraud
+# FS-02 Business Email Compromise / Wire Fraud
 
 **MITRE ATT&CK:** T1586, T1534
 
 **Plain-English summary:** An attacker either compromises or convincingly impersonates an executive or advisor's email account and asks someone to move money or change payment/beneficiary details.
 
 ### Prerequisites
-- Splunk access to `index=email` (content search — confirm legal/HR authorization since you're reading body text) and `index=policyadmin`.
+- Splunk access to `index=email` (this is a content search, so confirm legal/HR authorization before you read message bodies) and `index=policyadmin`.
 
 ### Step-by-Step
 1. **Keyword search across subject/body.**
@@ -45,7 +45,7 @@
 5. **Verify before any money moves.** This step is manual/procedural, not SPL: notify the payments team to hold any transaction matching the pattern from Step 3 and verify out-of-band via a known-good phone number.
 
 ### If You Find Something
-- **Any pending transaction matching the "change then request" pattern:** Escalate immediately — time-sensitive. Contact the fraud/payments team directly.
+- **Any pending transaction matching the "change then request" pattern:** Escalate immediately. This is time-sensitive, so contact the fraud/payments team directly.
 - **Completed transaction discovered after the fact:** Escalate to IR and fraud team same-day.
 
 ### Turn it into an alert

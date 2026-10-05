@@ -1,6 +1,6 @@
-# H-14 — Defense evasion: EDR tampering, log clearing and rogue cloud VMs (techniques 16–18)
+# H-14 Defense evasion: EDR tampering, log clearing and rogue cloud VMs (techniques 16-18)
 
-**Hypothesis:** Before stealing data or deploying ransomware, the operator is blinding us — disabling or excluding security tools (sometimes with a vulnerable signed driver), clearing event logs, or standing up cloud VMs that have no EDR so they can work unobserved.
+**Hypothesis:** Before stealing data or deploying ransomware, the operator is blinding us. That can mean disabling or excluding security tools (sometimes with a vulnerable signed driver), clearing event logs, or standing up cloud VMs with no EDR so they can work unseen.
 
 **Data sources:** EDR process and driver-load telemetry (Sysmon EID 1/6, Falcon `ProcessRollup2`/`DriverLoad`, `DeviceProcessEvents`/`DeviceEvents` DriverLoad, Elastic `logs-endpoint.events.library-*`/`process-*`); Windows Security 1102, System 104, Defender Operational 5001/5007; CloudTrail, Azure Activity, GCP Admin Activity.
 
@@ -8,10 +8,10 @@
 
 1. Run 14A for commands that stop/delete security services, add Defender exclusions or disable real-time protection, and for loads of known-vulnerable drivers (check against [loldrivers.io](https://www.loldrivers.io/)).
 2. Run 14B for log clearing on Windows and Linux.
-3. Run 14C for VMs created by human identities (not automation) — Scattered Spider has created cloud VMs to operate outside EDR coverage, per CISA.
+3. Run 14C for VMs created by human identities (not automation). CISA reports that Scattered Spider has created cloud VMs to work outside EDR coverage.
 4. Any confirmed tampering means the host's telemetry after that point is unreliable; pull a forensic image and widen the hunt to neighboring hosts.
 
-**Query 14A — security tool tampering and vulnerable driver loads**
+**Query 14A: security tool tampering and vulnerable driver loads**
 
 Splunk
 
@@ -51,7 +51,7 @@ FROM logs-endpoint.events.process-*, logs-endpoint.events.library-*
 | KEEP @timestamp, host.name, user.name, process.command_line, dll.path, dll.hash.sha256
 ```
 
-**Query 14B — event log clearing**
+**Query 14B: event log clearing**
 
 Splunk: `(index=wineventlog (EventCode=1102 OR (source="WinEventLog:System" EventCode=104))) OR (index=sysmon EventCode=1 (CommandLine="*wevtutil* cl *" OR CommandLine="*Clear-EventLog*" OR CommandLine="*Remove-EventLog*")) OR (index=linux ("history -c" OR "> /var/log/" OR "shred " OR "unset HISTFILE")) | stats count values(CommandLine) by host user EventCode`
 
@@ -61,7 +61,7 @@ KQL: `union (SecurityEvent | where EventID == 1102 | project TimeGenerated, Comp
 
 Elastic ES|QL: `FROM logs-system.security-*, logs-system.system-*, logs-endpoint.events.process-* | WHERE event.code IN ("1102","104") OR process.command_line RLIKE """(?i).*(wevtutil(\.exe)?\s+cl\s|Clear-EventLog|Remove-EventLog|history\s+-c|unset\s+HISTFILE|shred\s+.*/var/log|>\s*/var/log/).*""" | KEEP @timestamp, host.name, user.name, event.code, process.command_line`
 
-**Query 14C — cloud VMs created by human identities**
+**Query 14C: cloud VMs created by human identities**
 
 Splunk: `(index=aws sourcetype=aws:cloudtrail eventName=RunInstances userIdentity.type IN (IAMUser, AssumedRole) NOT userIdentity.arn IN ("*terraform*","*cicd*","*autoscaling*")) OR (index=azure operationName.value="MICROSOFT.COMPUTE/VIRTUALMACHINES/WRITE" caller="*@*") OR (index=gcp data.protoPayload.methodName IN ("v1.compute.instances.insert","beta.compute.instances.insert") data.protoPayload.authenticationInfo.principalEmail!="*gserviceaccount.com") | eval actor=coalesce('userIdentity.arn', caller, 'data.protoPayload.authenticationInfo.principalEmail') | stats count min(_time) as first_seen values(sourceIPAddress) values(callerIpAddress) by actor`
 

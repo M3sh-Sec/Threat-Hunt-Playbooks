@@ -1,4 +1,4 @@
-# FS-01 — Spearphishing for Credential Theft
+# FS-01 Spearphishing for Credential Theft
 
 **MITRE ATT&CK:** T1566.001, T1566.002
 
@@ -25,7 +25,7 @@
    | where url_reputation="unknown" OR domain_age_days<30
    | table _time, user, url, url_reputation, domain_age_days
    ```
-   *(Field names like `url_reputation` and `domain_age_days` depend on your email security add-on — check `| fieldsummary` on the raw sourcetype if these don't match.)*
+   *(Field names like `url_reputation` and `domain_age_days` depend on your email security add-on. If they don't match, run `| fieldsummary` on the raw sourcetype.)*
 4. **Check for a sign-in shortly after each suspicious click (join in SPL using `transaction` or a subsearch).**
    ```spl
    index=email sourcetype=proofpoint action=click earliest=-7d
@@ -41,7 +41,7 @@
    | table user, click_time, signin_time, src_ip, city, country, delta_minutes
    ```
    *Simpler alternative if `join` performs poorly in your environment: run the click search and sign-in search separately, export both to CSV, and manually cross-reference by username/timestamp for your first few hunts.*
-5. **Check for new mailbox rules or OAuth grants created right after** (see Playbook 4, Step 1 for the exact query — reuse it, filtered to the users flagged above).
+5. **Check for new mailbox rules or OAuth grants created right after** (reuse the query from Playbook 4, Step 1, filtered to the users flagged above).
 6. **Score and shortlist.**
    ```spl
    | eval risk_score=case(delta_minutes<=15 AND matched_lookalike=1, 3, matched_lookalike=1, 1, 1=1, 0)

@@ -1,4 +1,4 @@
-# H-02 — Windows persistence
+# H-02 Windows persistence
 
 **Hypothesis:** An intruder who gained execution on a Windows endpoint or server has created an autostart entry (registry ASEP, service, scheduled task, WMI subscription or startup-folder item) that launches a payload from a user-writable path or through a script/LOLBin interpreter.
 
@@ -22,7 +22,7 @@
 4. For each lead, identify the process that created the entry, its parent, the logon session and the user. Check whether the referenced file still exists and its hash prevalence.
 5. Cross-check with Hunt 1 (side-loaded DLLs are often launched from a Run key or task).
 
-**Query 2A — suspicious registry autostart entries (Run keys, Winlogon, IFEO, COM, services)**
+**Query 2A: suspicious registry autostart entries (Run keys, Winlogon, IFEO, COM, services)**
 
 Splunk
 
@@ -68,7 +68,7 @@ FROM logs-endpoint.events.registry-*
 | WHERE hosts <= 5
 ```
 
-**Query 2B — new services and scheduled tasks pointing at suspicious commands**
+**Query 2B: new services and scheduled tasks pointing at suspicious commands**
 
 Splunk
 
@@ -118,7 +118,7 @@ FROM logs-system.security-*, logs-system.system-*
 | STATS c = COUNT(*), first_seen = MIN(@timestamp) BY host.name, event.code, winlog.event_data.ServiceName, winlog.event_data.TaskName, cmd
 ```
 
-**Query 2C — WMI event subscriptions and startup-folder drops**
+**Query 2C: WMI event subscriptions and startup-folder drops**
 
 Splunk
 

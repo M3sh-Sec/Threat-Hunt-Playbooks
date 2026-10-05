@@ -1,4 +1,4 @@
-# FS-14 — API Abuse for Automated Account Enumeration/Takeover
+# FS-14 API Abuse for Automated Account Enumeration/Takeover
 
 **Plain-English summary:** Attackers script requests against your mobile app/partner APIs to guess valid member numbers or abuse password-reset functions.
 

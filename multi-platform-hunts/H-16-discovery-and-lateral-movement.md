@@ -1,4 +1,4 @@
-# H-16 — Discovery and lateral movement (techniques 22–23)
+# H-16 Discovery and lateral movement (techniques 22-23)
 
 **Hypothesis:** An operator is mapping Active Directory and cloud tenants with tools like AdFind, ADExplorer and SharpHound, then moving between hosts over RDP, SMB/PsExec and WinRM along paths that never occurred before.
 
@@ -10,7 +10,7 @@
 2. Run 16B for first-seen source → destination admin logons (RDP and network logons by privileged accounts) and PsExec-style service creation.
 3. Map the chain: initial host → discovery → first lateral hop → domain controller / vCenter / backup server. Scattered Spider and ransomware affiliates go straight for hypervisors and backups.
 
-**Query 16A — AD and trust discovery**
+**Query 16A: AD and trust discovery**
 
 Splunk
 
@@ -52,7 +52,7 @@ FROM logs-endpoint.events.process-*
 | STATS c = COUNT(*), first_seen = MIN(@timestamp), cmds = VALUES(process.command_line) BY host.name, user.name, process.name
 ```
 
-**Query 16B — first-seen admin logon paths and PsExec-style services**
+**Query 16B: first-seen admin logon paths and PsExec-style services**
 
 Splunk
 

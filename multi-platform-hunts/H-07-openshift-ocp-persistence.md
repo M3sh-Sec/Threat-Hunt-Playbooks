@@ -1,4 +1,4 @@
-# H-07 — OpenShift (OCP) persistence
+# H-07 OpenShift (OCP) persistence
 
 **Hypothesis:** An attacker who obtained a kubeconfig, service-account token or OpenShift OAuth token has established cluster persistence by binding themselves or a service account to `cluster-admin`, loosening Security Context Constraints, deploying privileged DaemonSets/CronJobs in system namespaces, registering admission webhooks, or adding an OAuth identity provider they control.
 
@@ -9,7 +9,7 @@
 | Source | Notes |
 | --- | --- |
 | `kube-apiserver`, `openshift-apiserver`, `oauth-apiserver` audit logs | Set audit policy profile to `WriteRequestBodies` (or `AllRequestBodies`) so `requestObject` is captured. Forward with `ClusterLogForwarder` (type `audit`) to Splunk HEC, Sentinel (Logs Ingestion API → custom table, shown here as `OCPAudit_CL`), Elastic (`logs-kubernetes.audit_logs-*`) or CrowdStrike NG-SIEM (HEC-compatible connector, JSON parser) |
-| Node logs (auditd/EDR on RHCOS nodes) | Container escapes surface as host process activity — pair with Hunt 3 |
+| Node logs (auditd/EDR on RHCOS nodes) | Container escapes show up as host process activity, so pair this with Hunt 3 |
 | CrowdStrike Falcon Cloud Security (KAC / container sensor) | Runtime detections for privileged containers and drift |
 
 Raw audit fields used: `verb`, `objectRef.resource`, `objectRef.namespace`, `objectRef.name`, `user.username`, `sourceIPs`, `userAgent`, `requestObject`, `responseStatus.code`. Elastic prefixes these with `kubernetes.audit.`.
@@ -22,7 +22,7 @@ Raw audit fields used: `verb`, `objectRef.resource`, `objectRef.namespace`, `obj
 4. Map each lead to the human or token behind it (`user.username`, `impersonatedUser`), then check the OAuth server logs for the token's origin.
 5. Confirm against change records; for malicious hits, delete the bindings/workloads, rotate SA tokens and the kubeadmin secret (or remove it), and review node-level activity.
 
-**Query 7A — RBAC, SCC, admission webhook and IdP changes**
+**Query 7A: RBAC, SCC, admission webhook and IdP changes**
 
 Splunk
 
@@ -72,7 +72,7 @@ FROM logs-kubernetes.audit_logs-*
 | SORT grants_admin DESC, first_seen DESC
 ```
 
-**Query 7B — privileged or host-mounted workloads, and DaemonSets/CronJobs created outside GitOps**
+**Query 7B: privileged or host-mounted workloads, and DaemonSets/CronJobs created outside GitOps**
 
 Splunk
 
@@ -123,7 +123,7 @@ FROM logs-kubernetes.audit_logs-*
 | KEEP @timestamp, kubernetes.audit.user.username, kubernetes.audit.objectRef.namespace, kubernetes.audit.objectRef.resource, kubernetes.audit.objectRef.name, privileged
 ```
 
-**Query 7C — exec into pods, SA token minting, and API use from unexpected networks**
+**Query 7C: exec into pods, SA token minting, and API use from unexpected networks**
 
 Splunk: `index=openshift (objectRef.subresource=exec OR (objectRef.resource=serviceaccounts objectRef.subresource=token verb=create)) | eval src=mvindex('sourceIPs{}',0) | where NOT cidrmatch("10.0.0.0/8",src) AND NOT cidrmatch("172.16.0.0/12",src) | stats count values(objectRef.namespace) as ns values(objectRef.name) as objs by user.username src userAgent`
 

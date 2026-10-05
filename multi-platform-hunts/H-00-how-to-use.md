@@ -1,15 +1,15 @@
-# H-00 — How to use these hunts
+# H-00 How to use these hunts
 
 Each hunt follows the same loop: state a testable hypothesis, confirm the data source is collected, run the baseline query, stack and filter outliers, pivot on suspicious hits, then either escalate or convert the logic into a detection. Run every query first over 30 days to baseline, then narrow to 7 days for daily hunting.
 
 **Hunt loop (apply to every hunt below)**
 
-1. **Validate telemetry** — confirm the listed data source exists and is parsed (run a simple count by host/account for the last 24h).
-2. **Baseline** — run the query over 30 days and stack by the key field (process path, DLL hash, user, API caller).
-3. **Outlier review** — focus on rare values (count of hosts ≤ 3, first-seen in last 7 days, unsigned, user-writable paths).
-4. **Pivot** — for each lead, pull parent/child process tree, network connections, logon session and same-hash prevalence.
-5. **Decide** — benign (document + allowlist), suspicious (escalate to IR), or detection-worthy (convert to scheduled rule).
-6. **Record** — log hunt ID, date range, queries run, hits, outcome, and tuning changes.
+1. **Validate telemetry.** Confirm the listed data source exists and is parsed (run a simple count by host/account for the last 24h).
+2. **Baseline.** Run the query over 30 days and stack by the key field (process path, DLL hash, user, API caller).
+3. **Outlier review.** Focus on rare values (count of hosts ≤ 3, first-seen in last 7 days, unsigned, user-writable paths).
+4. **Pivot.** For each lead, pull parent/child process tree, network connections, logon session and same-hash prevalence.
+5. **Decide.** Benign (document + allowlist), suspicious (escalate to IR), or detection-worthy (convert to scheduled rule).
+6. **Record.** Log hunt ID, date range, queries run, hits, outcome, and tuning changes.
 
 **Query language conventions**
 
@@ -25,7 +25,7 @@ Each hunt follows the same loop: state a testable hypothesis, confirm the data s
 - Index names, sourcetypes and table names vary by deployment; replace `index=edr`, `logs-*` and similar with your own.
 - CrowdStrike field names below reflect Falcon telemetry (`ImageFileName`, `CommandLine`, `TargetFileName`, `ParentBaseFileName`). Fields for Event Search (legacy) differ slightly.
 - Queries are hunting starting points, not tuned detections. Expect noise in the first pass; the outlier-review step is where the value is.
-- Hunts 1–8 are technique hunts requested explicitly. Hunts 9–16 cover the top 25 techniques used by the groups most active against insurance, financial services and distribution companies (see [Threat landscape](threat-landscape-and-top-25-techniques.md)).
+- Hunts 1 to 8 are technique hunts. Hunts 9 to 17 cover the top 25 techniques used by the groups most active against insurance, financial services and distribution companies (see [Threat landscape](threat-landscape-and-top-25-techniques.md)).
 
 ---
 

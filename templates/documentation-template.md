@@ -12,7 +12,7 @@ Query run (platform + exact query) (paste exact query):
 Number of results:
 Summary of findings:
 False positives identified (and why):
-Escalated? Y/N — to whom, when:
-Saved as report/alert? Y/N — name:
+Escalated? Y/N (to whom, when):
+Saved as report/alert? Y/N (name):
 Follow-up actions / recommendations:
 ```

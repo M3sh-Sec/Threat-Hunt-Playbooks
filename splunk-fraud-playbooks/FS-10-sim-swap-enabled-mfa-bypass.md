@@ -1,4 +1,4 @@
-# FS-10 — SIM Swap Enabled MFA Bypass
+# FS-10 SIM Swap Enabled MFA Bypass
 
 **MITRE ATT&CK:** T1621, T1451
 
@@ -32,7 +32,7 @@
    | where delay_minutes>10
    | table user, otp_sent_time, otp_used_time, delay_minutes
    ```
-   *(Field names for `otp_sent_time`/`otp_used_time` depend on how your MFA provider logs events — adjust to match your actual sourcetype.)*
+   *(Field names for `otp_sent_time`/`otp_used_time` depend on how your MFA provider logs events, so adjust them to match your actual sourcetype.)*
 4. **Cross-check customer complaint tickets** (if ingested into Splunk, e.g., `index=support`) for phrases like "lost service" or "new SIM."
    ```spl
    index=support earliest=-7d

@@ -1,4 +1,4 @@
-# H-11 — Remote access software and tunnels (technique 8)
+# H-11 Remote access software and tunnels (technique 8)
 
 **Hypothesis:** An intruder has installed a commercial remote-management tool or tunneling utility that is not part of our approved stack, so they can come back interactively without malware and without our VPN.
 
@@ -10,11 +10,11 @@
 2. Run 11A for executions of RMM/tunnel binaries, including renamed copies (match on original filename or signer where available).
 3. Run 11B for DNS/network connections to RMM and tunnel domains from hosts that should not use them.
 4. For approved tools, check the instance/tenant ID in the command line or config (a ScreenConnect client pointing to a relay you don't own is malicious).
-5. Check the install time against the user's sign-in history and help-desk tickets — RMM installs shortly after an MFA reset are a strong signal.
+5. Check the install time against the user's sign-in history and help-desk tickets. An RMM install shortly after an MFA reset is a strong signal.
 
 Tool list used below: `AnyDesk, ScreenConnect.ClientService / ConnectWiseControl, TeamViewer, Atera (AteraAgent), Splashtop (SRService, strwinclt), RustDesk, FleetDeck, Level, TacticalRMM, MeshAgent, NetSupport (client32), LogMeIn, Zoho Assist, RemotePC, Pulseway, SimpleHelp, ngrok, cloudflared, tailscale, chisel, plink`.
 
-**Query 11A — RMM and tunnel binaries executed**
+**Query 11A: RMM and tunnel binaries executed**
 
 Splunk
 
@@ -58,7 +58,7 @@ FROM logs-endpoint.events.process-*
 | SORT hosts ASC
 ```
 
-**Query 11B — DNS lookups to RMM and tunnel services**
+**Query 11B: DNS lookups to RMM and tunnel services**
 
 Domains: `anydesk.com, net.anydesk.com, screenconnect.com, connectwise.com, teamviewer.com, atera.com, splashtop.com, rustdesk.com, fleetdeck.io, level.io, meshcentral.com, netsupportsoftware.com, logmein.com, zoho.com/assist, remotepc.com, pulseway.com, ngrok.io, ngrok-free.app, ngrok.app, trycloudflare.com, tailscale.com`.
 

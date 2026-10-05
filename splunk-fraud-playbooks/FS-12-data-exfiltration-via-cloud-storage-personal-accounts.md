@@ -1,4 +1,4 @@
-# FS-12 — Data Exfiltration via Cloud Storage / Personal Accounts
+# FS-12 Data Exfiltration via Cloud Storage / Personal Accounts
 
 **MITRE ATT&CK:** T1567
 

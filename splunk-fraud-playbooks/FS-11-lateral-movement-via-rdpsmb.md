@@ -1,4 +1,4 @@
-# FS-11 — Lateral Movement via RDP/SMB
+# FS-11 Lateral Movement via RDP/SMB
 
 **MITRE ATT&CK:** T1021.001, T1021.002
 
@@ -37,7 +37,7 @@
    ```
 
 ### If You Find Something
-- **Workstation-to-workstation RDP using local admin, not tied to known IT activity:** Escalate to IR as likely active lateral movement — treat with urgency.
+- **Workstation-to-workstation RDP using local admin, not tied to known IT activity:** Escalate to IR as likely active lateral movement and treat it as urgent.
 - **Isolated admin share access with a plausible explanation:** Log it, verify with IT, close if confirmed legitimate.
 
 ### Turn it into an alert

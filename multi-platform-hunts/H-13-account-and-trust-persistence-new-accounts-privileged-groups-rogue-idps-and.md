@@ -1,4 +1,4 @@
-# H-13 — Account and trust persistence: new accounts, privileged groups, rogue IdPs and OAuth grants (techniques 12–14)
+# H-13 Account and trust persistence: new accounts, privileged groups, rogue IdPs and OAuth grants (techniques 12-14)
 
 **Hypothesis:** The intruder has created or elevated accounts in Active Directory, Entra or Okta, added a federated identity provider they control, or granted an OAuth application access to company data, so they can return even after passwords are reset.
 
@@ -11,7 +11,7 @@
 3. Re-run Hunt 5 Query 5A for Entra federation, consent and app credential events, and Hunt 8 for Salesforce connected apps.
 4. Validate each change against a ticket. Pay attention to accounts named like service or vendor accounts and to changes made outside business hours.
 
-**Query 13A — AD account creation and privileged group membership**
+**Query 13A: AD account creation and privileged group membership**
 
 Splunk
 
@@ -59,7 +59,7 @@ FROM logs-system.security-*
 | SORT @timestamp DESC
 ```
 
-**Query 13B — Okta identity-provider and admin-role changes**
+**Query 13B: Okta identity-provider and admin-role changes**
 
 Events: `system.idp.lifecycle.create`, `system.idp.lifecycle.update`, `system.idp.lifecycle.activate`, `user.account.privilege.grant`, `group.privilege.grant`, `application.lifecycle.create`, `app.oauth2.as.consent.grant`, `policy.lifecycle.update` (sign-on/MFA policy weakened), `system.api_token.create`.
 

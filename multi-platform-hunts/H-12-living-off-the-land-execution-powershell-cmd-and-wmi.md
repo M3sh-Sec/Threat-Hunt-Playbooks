@@ -1,4 +1,4 @@
-# H-12 — Living-off-the-land execution: PowerShell, cmd and WMI (techniques 9–11)
+# H-12 Living-off-the-land execution: PowerShell, cmd and WMI (techniques 9-11)
 
 **Hypothesis:** An operator is running hands-on-keyboard commands through PowerShell (encoded commands, download cradles, AMSI bypasses), `cmd.exe` and WMI/Impacket-style remote execution, which stand out from admin scripts by their encoding, parent process and destination.
 
@@ -11,7 +11,7 @@
 3. Decode `-enc` payloads (base64 UTF-16LE) and extract URLs/IPs for pivoting.
 4. Escalate anything run by a recently reset account (Hunt 9) or launched via an RMM tool (Hunt 11).
 
-**Query 12A — suspicious PowerShell**
+**Query 12A: suspicious PowerShell**
 
 Indicators: `-enc`, `-EncodedCommand`, `-w hidden`, `-nop`, `IEX`, `Invoke-Expression`, `DownloadString`, `DownloadFile`, `Net.WebClient`, `Invoke-WebRequest`, `FromBase64String`, `AmsiUtils`, `amsiInitFailed`, `Reflection.Assembly::Load`, `Invoke-Mimikatz`, `Get-ADComputer`, `-bxor`.
 
@@ -55,7 +55,7 @@ FROM logs-endpoint.events.process-*, logs-windows.powershell_operational-*
 | STATS c = COUNT(*), first_seen = MIN(@timestamp), hosts = VALUES(host.name) BY user.name, process.parent.name, text
 ```
 
-**Query 12B — WMI and Impacket-style remote execution**
+**Query 12B: WMI and Impacket-style remote execution**
 
 Splunk
 

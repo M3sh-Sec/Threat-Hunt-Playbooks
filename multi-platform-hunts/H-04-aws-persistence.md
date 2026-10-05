@@ -1,6 +1,6 @@
-# H-04 — AWS persistence
+# H-04 AWS persistence
 
-**Hypothesis:** An attacker holding stolen AWS credentials (from a developer laptop, CI secret, SSO session hijack or exposed access key) has created durable access — new IAM users or access keys, modified role trust policies, new identity providers, or serverless/compute backdoors — that will survive the original credential being revoked.
+**Hypothesis:** An attacker holding stolen AWS credentials (from a developer laptop, CI secret, SSO session hijack or exposed access key) has created durable access that will outlive the original credential: new IAM users or access keys, modified role trust policies, new identity providers, or serverless and compute backdoors.
 
 **ATT&CK:** T1098.001 Additional Cloud Credentials, T1136.003 Cloud Account, T1098.003 Additional Cloud Roles, T1484.002 Trust Modification (SAML/OIDC providers), T1546 / T1525 (Lambda and AMI/user-data backdoors), T1562.008 Disable Cloud Logs.
 
@@ -23,7 +23,7 @@ CrowdStrike NG-SIEM field names depend on the AWS parser; queries below use the 
 4. Check whether logging was tampered with in the same session (`StopLogging`, `DeleteTrail`, `PutEventSelectors`, `DeleteDetector`).
 5. For confirmed malicious changes, inventory every resource the principal touched and rotate credentials of every identity it could assume.
 
-**Query 4A — IAM, identity and compute persistence API calls**
+**Query 4A: IAM, identity and compute persistence API calls**
 
 Event list used below: `CreateUser, CreateAccessKey, CreateLoginProfile, UpdateLoginProfile, AttachUserPolicy, PutUserPolicy, AddUserToGroup, CreateRole, UpdateAssumeRolePolicy, AttachRolePolicy, PutRolePolicy, CreatePolicyVersion, SetDefaultPolicyVersion, CreateSAMLProvider, UpdateSAMLProvider, CreateOpenIDConnectProvider, CreateAccountAssignment, CreateFunction20150331, UpdateFunctionCode20150331v2, AddPermission20150331v2, ImportKeyPair, ModifyInstanceAttribute, StopLogging, DeleteTrail, PutEventSelectors, DeleteDetector`.
 
@@ -71,7 +71,7 @@ FROM logs-aws.cloudtrail-*
 | SORT first_seen DESC
 ```
 
-**Query 4B — high-signal patterns: credentials minted for another user, external trust, new IdPs**
+**Query 4B: credentials minted for another user, external trust and new IdPs**
 
 Splunk
 

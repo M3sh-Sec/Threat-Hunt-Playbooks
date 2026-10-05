@@ -1,4 +1,4 @@
-# H-08 — Salesforce persistence and data theft
+# H-08 Salesforce persistence and data theft
 
 **Hypothesis:** A threat actor has gained persistent API access to our Salesforce org by tricking a user into authorizing a malicious connected app (often a modified Data Loader approved through the OAuth device-code flow), or by abusing OAuth tokens of a trusted third-party integration, and is using that access to bulk-export customer/policyholder records and mine them for secrets.
 
@@ -14,7 +14,7 @@
 | Event Monitoring (API, RestApi, BulkApi, BulkApi2, ReportExport, URI) | Objects queried, rows processed, client | `sfdc:logfile` | `SalesforceServiceCloud_CL` | `logs-salesforce.apex-*` | NG-SIEM |
 | Real-Time Event Monitoring (Shield): `ApiEvent`, `BulkApiResultEvent`, `ReportEvent`, `LoginEvent` | Includes SOQL `Query` text and `RowsProcessed` | via Event Monitoring Analytics / streaming | custom table | custom ingest | NG-SIEM |
 | Setup Audit Trail | Connected app creation/edits, permission changes, user creation | `sfdc:setupaudittrail` | `SalesforceServiceCloud_CL` | `logs-salesforce.setupaudittrail-*` | NG-SIEM |
-| Connected App OAuth Usage / `OauthToken` object | Which apps hold tokens for which users | Scheduled SOQL pull | — | — | — |
+| Connected App OAuth Usage / `OauthToken` object | Which apps hold tokens for which users | Scheduled SOQL pull | n/a | n/a | n/a |
 
 Salesforce field names differ across connectors; queries below use Event Log File names (`EVENT_TYPE`, `USER_ID`, `CLIENT_IP`, `ROWS_PROCESSED`, `ENTITY_NAME`, `URI`) and LoginHistory names (`Application`, `LoginType`, `SourceIp`, `Browser`).
 
@@ -24,11 +24,11 @@ Salesforce field names differ across connectors; queries below use Event Log Fil
 2. Run 8A for OAuth / connected-app logins by application name, new IPs, VPN/hosting ASNs (Mullvad, Tor exits) and the device-code flow.
 3. Run 8B for bulk export: high `ROWS_PROCESSED`, BulkApi jobs, and API queries against `Account`, `Contact`, `Case`, `Opportunity`, `User`, policy/claim custom objects.
 4. Run 8C on Setup Audit Trail for persistence: new connected apps, OAuth policy changes, "API Enabled" / "Modify All Data" / "View All Data" granted, new users, login-IP range relaxations.
-5. If Shield is available, run 8D on `ApiEvent.Query` for secret-hunting SOQL (`AKIA`, `password`, `secret`, `token`, `snowflake`) — UNC6395's hallmark — and for deletion of bulk query jobs.
+5. If Shield is available, run 8D on `ApiEvent.Query` for secret-hunting SOQL (`AKIA`, `password`, `secret`, `token`, `snowflake`), which is UNC6395's hallmark, and for deleted bulk query jobs.
 6. Correlate the Salesforce user with identity provider logs (Okta/Entra) for the preceding help-desk call, MFA reset or device-code approval (Hunt 5, Hunt 9).
 7. Containment: revoke the app's tokens, block it via API Access Control (allowlist connected apps), remove "API Enabled" from non-essential profiles, rotate any secrets found in records.
 
-**Query 8A — OAuth and connected-app logins from unknown apps or new networks**
+**Query 8A: OAuth and connected-app logins from unknown apps or new networks**
 
 Splunk
 
@@ -80,7 +80,7 @@ FROM logs-salesforce.login-*
 | SORT first_seen DESC
 ```
 
-**Query 8B — bulk or anomalous record export**
+**Query 8B: bulk or anomalous record export**
 
 Splunk
 
@@ -131,7 +131,7 @@ FROM logs-salesforce.apex-*
 | SORT total_rows DESC
 ```
 
-**Query 8C — Setup Audit Trail persistence changes**
+**Query 8C: Setup Audit Trail persistence changes**
 
 Watch these `Action` values: `insertConnectedApplication`, `updateConnectedApplication`, `connectedAppOauthPolicyChange`, `PermSetAssign`, `PermSetEnableUserPerm` (API Enabled, Modify All Data, View All Data, Manage Users, Author Apex), `createduser`, `changedprofileforuser`, `loginIpRangesChanged` / `orgIpRangesChanged`, `changedsessiontimeout`, `namedCredentialCreated`, `remoteSiteCreated`, `certificateCreated`.
 
@@ -151,7 +151,7 @@ KQL: `SalesforceServiceCloud_CL | where TimeGenerated > ago(30d) and isnotempty(
 
 Elastic ES|QL: `FROM logs-salesforce.setupaudittrail-* | WHERE event.action IN ("insertConnectedApplication","updateConnectedApplication","connectedAppOauthPolicyChange","PermSetAssign","PermSetEnableUserPerm","createduser","changedprofileforuser","loginIpRangesChanged","orgIpRangesChanged","namedCredentialCreated","remoteSiteCreated","certificateCreated") OR salesforce.setup_audit_trail.display RLIKE ".*(API Enabled|Modify All Data|View All Data).*" | KEEP @timestamp, user.name, event.action, salesforce.setup_audit_trail.section, salesforce.setup_audit_trail.display`
 
-**Query 8D — secret-hunting SOQL and job cleanup (requires Shield Real-Time Event Monitoring `ApiEvent`)**
+**Query 8D: secret-hunting SOQL and job cleanup (requires Shield Real-Time Event Monitoring `ApiEvent`)**
 
 Splunk: `index=salesforce sourcetype=sfdc:apievent | regex Query="(?i)(AKIA|ASIA|password|passwd|secret|api[_ ]?key|token|snowflake|BEGIN (RSA|OPENSSH) PRIVATE KEY)" | stats count values(Query) as queries values(SourceIp) as ips by Username Application`
 
@@ -163,7 +163,7 @@ Elastic ES|QL: `FROM logs-salesforce.apievent-* | WHERE salesforce.api_event.que
 
 Also search for bulk query jobs that were created and then deleted by the same user within minutes (BulkApi `DELETE` on `/jobs/query/`), which UNC6395 used to cover its tracks.
 
-**Common false positives:** sanctioned ETL (MuleSoft, Informatica, Fivetran), marketing sync tools, admins running Data Loader for migrations. Approved integrations should run under dedicated integration users with IP restrictions — anything else using Data Loader is worth a call to the user.
+**Common false positives:** sanctioned ETL (MuleSoft, Informatica, Fivetran), marketing sync tools, admins running Data Loader for migrations. Approved integrations should run under dedicated integration users with IP restrictions. Anyone else using Data Loader is worth a call.
 
 ---
 

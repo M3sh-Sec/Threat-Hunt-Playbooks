@@ -1,4 +1,4 @@
-# FS-13 — Malicious Macro / HTA Delivery via Document Attachments
+# FS-13 Malicious Macro / HTA Delivery via Document Attachments
 
 **MITRE ATT&CK:** T1204.002, T1566.001
 

@@ -1,4 +1,4 @@
-# FS-06 — Third-Party / Vendor Supply Chain Compromise
+# FS-06 Third-Party / Vendor Supply Chain Compromise
 
 **MITRE ATT&CK:** T1195
 
@@ -8,7 +8,7 @@
 - Splunk access to `index=network` (VPN logs) and a lookup table `vendor_access_inventory.csv` (columns: `account`, `vendor_name`, `approved_resources`, `expected_hours`, `expected_ip_range`).
 
 ### Step-by-Step
-1. **Build/confirm your vendor inventory lookup** (this is a one-time setup task, not a search — populate `vendor_access_inventory.csv` from procurement/IT asset records).
+1. **Build/confirm your vendor inventory lookup** (a one-time setup task, not a search: populate `vendor_access_inventory.csv` from procurement and IT asset records).
 2. **Check for access outside documented scope.**
    ```spl
    index=network sourcetype=vpn earliest=-30d
@@ -37,7 +37,7 @@
    | where excess=1
    | table account, vendor_name, granted_permissions, approved_resources
    ```
-5. **Vendor breach news monitoring** — this step is done outside Splunk (manual web search or a threat-intel feed), but you can log findings into a Splunk lookup (`vendor_breach_watch.csv`) and join it against Step 2's output to auto-prioritize.
+5. **Watch for vendor breach news.** This happens outside Splunk, through a manual web search or a threat-intel feed. Log what you find in a Splunk lookup (`vendor_breach_watch.csv`) and join it against Step 2's output to prioritize automatically.
 
 ### If You Find Something
 - **Active anomalous access from a vendor account:** Escalate to IR; recommend temporarily suspending that vendor's access.

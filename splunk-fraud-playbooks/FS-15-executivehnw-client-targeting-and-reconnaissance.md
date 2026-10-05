@@ -1,4 +1,4 @@
-# FS-15 — Executive/HNW Client Targeting & Reconnaissance
+# FS-15 Executive/HNW Client Targeting & Reconnaissance
 
 **MITRE ATT&CK:** T1591, T1598.003
 
@@ -23,7 +23,7 @@
    | where isnotnull(name)
    | table _time, sender, recipient, name, title, subject, verdict
    ```
-4. **Impersonation profile search** — this is a manual step outside Splunk (search LinkedIn/social platforms directly for watch-list names), but log any findings into a lookup (`impersonation_findings.csv`) for tracking.
+4. **Search for impersonation profiles.** This is manual and happens outside Splunk: search LinkedIn and other social platforms for watch-list names, then log anything you find in a lookup (`impersonation_findings.csv`) so you can track it.
 
 ### If You Find Something
 - **Watch-list member's credentials found in a fresh breach dump, or live impersonation profile found:** Escalate to IR, notify the individual directly, recommend credential rotation and hardware MFA.

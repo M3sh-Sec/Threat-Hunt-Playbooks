@@ -1,4 +1,4 @@
-# H-06 — GCP persistence
+# H-06 GCP persistence
 
 **Hypothesis:** An adversary with a compromised Google identity or service-account key has established persistence by minting new service-account keys, granting IAM roles to attacker-controlled principals (external Gmail/other-domain accounts or new service accounts), injecting SSH keys or startup scripts through instance/project metadata, adding workload-identity federation providers, or deploying Cloud Functions/Cloud Run/Scheduler jobs.
 
@@ -8,8 +8,8 @@
 
 | Source | Notes |
 | --- | --- |
-| Cloud Audit Logs — Admin Activity (always on) | Org-level aggregated sink to Pub/Sub → Splunk (`google:gcp:pubsub:message`), Sentinel `GCPAuditLogs`, Elastic `logs-gcp.audit-*`, CrowdStrike NG-SIEM GCP connector |
-| Cloud Audit Logs — Data Access for IAM (`iam.googleapis.com`, `iamcredentials.googleapis.com`) | Must be enabled; needed to see `GenerateAccessToken` / `SignBlob` impersonation |
+| Cloud Audit Logs: Admin Activity (always on) | Org-level aggregated sink to Pub/Sub → Splunk (`google:gcp:pubsub:message`), Sentinel `GCPAuditLogs`, Elastic `logs-gcp.audit-*`, CrowdStrike NG-SIEM GCP connector |
+| Cloud Audit Logs: Data Access for IAM (`iam.googleapis.com`, `iamcredentials.googleapis.com`) | Must be enabled; needed to see `GenerateAccessToken` / `SignBlob` impersonation |
 | Security Command Center | Event Threat Detection findings (persistence: IAM anomalous grant, new SA key) |
 
 Field mapping: Splunk `data.protoPayload.methodName` / `...authenticationInfo.principalEmail` / `...requestMetadata.callerIp`; Sentinel `MethodName` / `PrincipalEmail` / `CallerIp`; Elastic `event.action` / `client.user.email` / `source.ip`.
@@ -22,7 +22,7 @@ Field mapping: Splunk `data.protoPayload.methodName` / `...authenticationInfo.pr
 4. For each new SA key, confirm a human or pipeline requested it; check where the key was first used (`authenticationInfo.serviceAccountKeyName` in later calls) and from which IPs.
 5. Check for logging tampering in the same window (`DeleteSink`, `UpdateSink`, `google.logging.v2.ConfigServiceV2.UpdateCmekSettings`).
 
-**Query 6A — GCP persistence method calls**
+**Query 6A: GCP persistence method calls**
 
 Methods: `google.iam.admin.v1.CreateServiceAccount, google.iam.admin.v1.CreateServiceAccountKey, google.iam.admin.v1.UploadServiceAccountKey, SetIamPolicy, google.iam.v1.WorkloadIdentityPools.CreateWorkloadIdentityPoolProvider, v1.compute.instances.setMetadata, v1.compute.projects.setCommonInstanceMetadata, google.cloud.oslogin.v1.OsLoginService.ImportSshPublicKey, google.cloud.functions.v1.CloudFunctionsService.CreateFunction, google.cloud.functions.v2.FunctionService.CreateFunction, google.cloud.run.v1.Services.CreateService, google.cloud.scheduler.v1.CloudScheduler.CreateJob, google.logging.v2.ConfigServiceV2.DeleteSink, google.logging.v2.ConfigServiceV2.UpdateSink`.
 
@@ -68,7 +68,7 @@ FROM logs-gcp.audit-*
 | SORT first_seen DESC
 ```
 
-**Query 6B — IAM grants to external principals or high-privilege roles**
+**Query 6B: IAM grants to external principals or high-privilege roles**
 
 Splunk
 
@@ -127,7 +127,7 @@ FROM logs-gcp.audit-*
 
 (If your Elastic GCP integration stores binding deltas as a flattened object rather than keyword strings, run this as KQL in Discover: `event.action:*SetIamPolicy and gcp.audit.service_data.policy_delta.binding_deltas.action:ADD`.)
 
-**Query 6C — SSH keys and startup scripts injected via metadata**
+**Query 6C: SSH keys and startup scripts injected via metadata**
 
 Splunk: `index=gcp data.protoPayload.methodName IN ("v1.compute.instances.setMetadata","v1.compute.projects.setCommonInstanceMetadata","google.cloud.oslogin.v1.OsLoginService.ImportSshPublicKey") | search "ssh-keys" OR "startup-script" OR ImportSshPublicKey | table _time data.protoPayload.authenticationInfo.principalEmail data.protoPayload.resourceName data.protoPayload.requestMetadata.callerIp`
 

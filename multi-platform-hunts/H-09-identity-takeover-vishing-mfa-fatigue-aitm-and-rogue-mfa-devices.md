@@ -1,4 +1,4 @@
-# H-09 — Identity takeover: vishing, MFA fatigue, AiTM and rogue MFA devices (techniques 1–5)
+# H-09 Identity takeover: vishing, MFA fatigue, AiTM and rogue MFA devices (techniques 1-5)
 
 **Hypothesis:** An attacker has socially engineered our service desk or an employee to reset a password or MFA factor, or has used push bombing or an adversary-in-the-middle phishing kit, and is now signing in as that user from infrastructure we have never seen (residential proxies, VPNs, hosting ASNs) with a newly enrolled MFA device.
 
@@ -9,9 +9,9 @@
 1. Run 9A for MFA push bombing: 5 or more denied/timed-out pushes for one user within 1 hour, followed by a success.
 2. Run 9B for help-desk takeover: an admin-initiated password or factor reset followed within 24 hours by a sign-in from a new IP/ASN or a new factor enrollment. Join to ServiceNow tickets and verify the caller was validated (callback to the number on file, manager approval).
 3. Run 9C for session replay (AiTM): the same session ID appearing from two different ASNs or countries within a short window, or Entra risk detections `anomalousToken`, `tokenIssuerAnomaly`, `attackerinTheMiddle`.
-4. For every confirmed lead: revoke sessions, reset the factor through a verified process, and pivot the user and IP into Hunts 5, 8, 11 and 13 — Scattered Spider moves to SaaS, RMM tools and new federation within hours.
+4. For every confirmed lead: revoke sessions, reset the factor through a verified process, and pivot the user and IP into Hunts 5, 8, 11 and 13. Scattered Spider moves to SaaS, RMM tools and new federation within hours.
 
-**Query 9A — MFA push bombing followed by success**
+**Query 9A: MFA push bombing followed by success**
 
 Splunk (Okta + Entra)
 
@@ -64,7 +64,7 @@ FROM logs-okta.system-*
 | WHERE fails >= 5 AND successes >= 1
 ```
 
-**Query 9B — admin/help-desk reset followed by sign-in from a new network or new factor enrollment (Okta)**
+**Query 9B: admin/help-desk reset followed by sign-in from a new network or new factor enrollment (Okta)**
 
 Splunk
 
@@ -107,7 +107,7 @@ sequence with maxspan=24h
   [any where event.dataset == "okta.system" and okta.event_type : ("user.session.start", "user.mfa.factor.activate") and okta.outcome.result == "SUCCESS"] by okta.actor.alternate_id
 ```
 
-**Query 9C — session token replay from multiple networks (AiTM indicator)**
+**Query 9C: session token replay from multiple networks (AiTM indicator)**
 
 Splunk: `index=azure sourcetype=azure:aad:signin status.errorCode=0 | iplocation ipAddress | stats dc(ipAddress) as ips dc(Country) as countries values(ipAddress) values(Country) by sessionId userPrincipalName | where countries>1 OR ips>3`
 

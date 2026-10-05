@@ -1,6 +1,6 @@
-# H-05 — Azure and Entra ID persistence
+# H-05 Azure and Entra ID persistence
 
-**Hypothesis:** After compromising an Entra ID account (help-desk social engineering, MFA fatigue, AiTM phishing or token theft), an adversary has created identity-plane persistence — new MFA methods or devices, app/service-principal credentials, consented OAuth apps, federated domains, privileged role assignments — or resource-plane persistence such as RBAC grants, VM extensions and Automation runbooks.
+**Hypothesis:** After compromising an Entra ID account (help-desk social engineering, MFA fatigue, AiTM phishing or token theft), an adversary has set up persistence. On the identity side that means new MFA methods or devices, app or service-principal credentials, consented OAuth apps, federated domains, or privileged role assignments. On the resource side it means RBAC grants, VM extensions and Automation runbooks.
 
 **ATT&CK:** T1098.005 Device Registration, T1556.006 MFA modification, T1098.001 Additional Cloud Credentials, T1098.003 Additional Cloud Roles, T1484.002 Domain/Tenant Trust Modification, T1528 Steal Application Access Token (illicit consent), T1136.003 Cloud Account, T1078.004 Cloud Accounts.
 
@@ -22,7 +22,7 @@
 5. Run 5B for Azure resource-plane changes (role assignments, VM run commands/extensions, Automation, Function app keys).
 6. Confirm or rule out with the user and the change ticket; revoke sessions (`Revoke-MgUserSignInSession`) and remove artifacts if malicious.
 
-**Query 5A — Entra ID identity-plane persistence operations**
+**Query 5A: Entra ID identity-plane persistence operations**
 
 Operations: `User registered security info, User registered all required security info, Admin registered security info, Register device, Add registered owner to device, Add service principal credentials, Update application – Certificates and secrets management, Add owner to application, Add owner to service principal, Consent to application, Add delegated permission grant, Add app role assignment to service principal, Add member to role, Add eligible member to role, Add user, Invite external user, Set domain authentication, Set federation settings on domain, Add unverified domain, Update conditional access policy, Delete conditional access policy, Update cross-tenant access settings`.
 
@@ -74,7 +74,7 @@ FROM logs-azure.auditlogs-*
 | SORT first_seen DESC
 ```
 
-**Query 5A-2 — MFA method added shortly after a password or MFA reset (help-desk takeover pattern)**
+**Query 5A-2: MFA method added shortly after a password or MFA reset (help-desk takeover pattern)**
 
 KQL (adapt the same two-event sequence to Splunk `transaction`, Elastic EQL `sequence`, or CrowdStrike `correlate()`)
 
@@ -98,7 +98,7 @@ sequence by azure.auditlogs.properties.target_resources.0.user_principal_name wi
   [any where event.dataset == "azure.auditlogs" and azure.auditlogs.operation_name : ("User registered security info", "Register device")]
 ```
 
-**Query 5B — Azure control-plane persistence (RBAC, VM extensions/run command, Automation, Functions)**
+**Query 5B: Azure control-plane persistence (RBAC, VM extensions/run command, Automation, Functions)**
 
 Operations: `Microsoft.Authorization/roleAssignments/write, Microsoft.Authorization/roleDefinitions/write, Microsoft.Compute/virtualMachines/extensions/write, Microsoft.Compute/virtualMachines/runCommand/action, Microsoft.Automation/automationAccounts/runbooks/write, Microsoft.Automation/automationAccounts/webhooks/write, Microsoft.Web/sites/functions/write, Microsoft.Web/sites/host/listkeys/action, Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/write, Microsoft.Insights/diagnosticSettings/delete`.
 

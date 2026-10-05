@@ -1,4 +1,4 @@
-# FS-05 — Ransomware Precursor Activity
+# FS-05 Ransomware Precursor Activity
 
 **MITRE ATT&CK:** T1486, T1490, TA0040
 
@@ -21,7 +21,7 @@
    | stats count AS files_touched by _time, user
    | where files_touched>500
    ```
-   *(Tune the `500` threshold to your actual baseline — run this same search over a known-quiet week first to see typical values.)*
+   *(Tune the `500` threshold to your own baseline. Run the same search over a known-quiet week first to see what typical values look like.)*
 3. **Hunt for unapproved remote access tooling installs/execution.**
    ```spl
    index=endpoint earliest=-7d
@@ -43,14 +43,14 @@
    | stats dc(search_name) AS distinct_signals values(search_name) AS signals by host
    | where distinct_signals>=2
    ```
-   *(For a cleaner version of this, build each individual hunt as a saved search, then use Splunk's "Risk-Based Alerting" in Enterprise Security to auto-sum risk scores per host — ask your Splunk admin if ES is available.)*
+   *(For a cleaner version of this, build each individual hunt as a saved search, then use Splunk's "Risk-Based Alerting" in Enterprise Security to auto-sum risk scores per host. Ask your Splunk admin whether ES is available.)*
 
 ### If You Find Something
-- **Any single strong signal (backup deletion, especially):** Escalate to IR **immediately** — do not wait to confirm all signals.
+- **Any single strong signal (backup deletion, especially):** Escalate to IR **immediately**. Don't wait to confirm the other signals.
 - **Weaker signal alone:** Escalate as medium priority same business day.
 
 ### Turn it into an alert
-Save Step 1's query as a **real-time or 15-minute scheduled alert** — this is the single highest-value alert in this entire document given how rarely it fires legitimately.
+Save Step 1's query as a **real-time or 15-minute scheduled alert**. It rarely fires for legitimate reasons, which makes it the most valuable alert in this whole set.
 
 
 ---

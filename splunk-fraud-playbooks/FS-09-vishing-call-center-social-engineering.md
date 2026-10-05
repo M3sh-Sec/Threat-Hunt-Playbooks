@@ -1,4 +1,4 @@
-# FS-09 — Vishing / Call-Center Social Engineering
+# FS-09 Vishing / Call-Center Social Engineering
 
 **MITRE ATT&CK:** T1598, T1656
 
@@ -37,14 +37,14 @@
    | search verification_result="fail" verification_result="pass"
    | table account_id, _time, duration, eventcount
    ```
-5. **Review notes/recordings for shortlisted calls** — manual step, use the `account_id` list from Steps 2-4 to pull specific call records for review.
+5. **Review notes and recordings for shortlisted calls.** This one is manual. Take the `account_id` list from Steps 2-4 and pull those call records for review.
 
 ### If You Find Something
 - **Change-then-withdraw pattern, transaction still pending:** Escalate to fraud team immediately to hold the transaction.
 - **Repeat-call pattern, no completed transaction yet:** Escalate as medium priority; flag the account for enhanced verification for 30 days.
 
 ### Turn it into an alert
-Save Step 2's query as an hourly alert — route directly to the fraud team's queue given the time sensitivity.
+Save Step 2's query as an hourly alert and route it straight to the fraud team's queue, since timing matters here.
 
 
 ---

@@ -1,4 +1,4 @@
-# FS-04 — Cloud Identity / OAuth Token Abuse
+# FS-04 Cloud Identity / OAuth Token Abuse
 
 **MITRE ATT&CK:** T1550.001, T1528
 
@@ -29,7 +29,7 @@
    | sort -consent_count
    ```
    *(Build `verified_publishers.csv` yourself from your IT-approved app list, or skip this lookup and just eyeball unfamiliar app names.)*
-4. **Look for a sudden spike — same app, multiple new consents recently.**
+4. **Look for a sudden spike: the same app picking up several new consents in a short time.**
    ```spl
    index=identity sourcetype="o365:management:audit" Operation="Consent to application*" earliest=-14d
    | stats dc(UserId) AS recent_consents by ApplicationDisplayName
@@ -38,7 +38,7 @@
 5. **Correlate consenting users with sign-in anomalies** (reuse Playbook 1, Step 4's join pattern, substituting consent time for click time).
 
 ### If You Find Something
-- **Live suspicious app with recent/multiple consents:** Escalate to IR immediately — revoke the app's access org-wide and force-refresh tokens.
+- **Live suspicious app with recent/multiple consents:** Escalate to IR immediately so they can revoke the app's access org-wide and force-refresh tokens.
 - **Single old consent, low-risk scope:** Log it, recommend periodic app-consent review as a hygiene item.
 
 ### Turn it into an alert

@@ -1,4 +1,4 @@
-# FS-08 — Web Application Attacks Against Customer Portals
+# FS-08 Web Application Attacks Against Customer Portals
 
 **MITRE ATT&CK:** T1190
 

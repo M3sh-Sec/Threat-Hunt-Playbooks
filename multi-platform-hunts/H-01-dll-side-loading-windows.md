@@ -1,4 +1,4 @@
-# H-01 — DLL side-loading (Windows)
+# H-01 DLL side-loading (Windows)
 
 **Hypothesis:** An adversary has placed a malicious DLL next to a legitimate, often signed, executable in a user-writable directory, so that the trusted binary loads attacker code and blends with normal process activity.
 
@@ -24,7 +24,7 @@ Note: Sysmon EID 7 is very noisy; scope it to non-system paths in your Sysmon co
 5. For each lead: check the EXE's original filename vs. on-disk name, signer, child processes, outbound network connections, and whether the DLL exports only a few functions (proxy DLLs often forward the rest).
 6. Pull the DLL for static analysis or sandboxing; search its hash across the fleet.
 
-**Query 1A — unsigned DLL loaded from the executable's own user-writable folder**
+**Query 1A: unsigned DLL loaded from the executable's own user-writable folder**
 
 Splunk
 
@@ -87,7 +87,7 @@ FROM logs-endpoint.events.library-*
 | SORT first_seen DESC
 ```
 
-**Query 1B — Windows system DLL names loaded from non-system paths**
+**Query 1B: Windows system DLL names loaded from non-system paths**
 
 Commonly abused names: `version.dll, dbghelp.dll, dbgcore.dll, winmm.dll, wtsapi32.dll, cryptbase.dll, uxtheme.dll, dwrite.dll, msimg32.dll, userenv.dll, propsys.dll, secur32.dll, wininet.dll, mpsvc.dll, libcurl.dll, vcruntime140.dll, iphlpapi.dll`.
 
@@ -130,7 +130,7 @@ FROM logs-endpoint.events.library-*
 | STATS hosts = COUNT_DISTINCT(host.name), loaders = VALUES(process.executable) BY dll.path, dll.hash.sha256
 ```
 
-**Query 1C — EXE + DLL dropped together (Elastic EQL sequence; adapt as a transaction/join elsewhere)**
+**Query 1C: EXE + DLL dropped together (Elastic EQL sequence; adapt as a transaction/join elsewhere)**
 
 ```
 sequence by host.id with maxspan=5m

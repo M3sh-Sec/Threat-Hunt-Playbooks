@@ -1,4 +1,4 @@
-# FS-03 — Valid Account Abuse / Credential Stuffing
+# FS-03 Valid Account Abuse / Credential Stuffing
 
 **MITRE ATT&CK:** T1078, T1110.004
 
@@ -47,7 +47,7 @@
    | where delta_hours>=0 AND delta_hours<=24
    | table user, login_time, _time, change_type, delta_hours
    ```
-5. **(Optional) Correlate with breach-monitoring feed if you have one ingested into Splunk as a lookup** — join `user`/email against `known_breach_emails.csv`.
+5. **(Optional) Correlate with a breach-monitoring feed if you have one in Splunk as a lookup.** Join `user`/email against `known_breach_emails.csv`.
 
 ### If You Find Something
 - **Successful login + immediate account change:** Escalate to IR/fraud as account-takeover-in-progress.

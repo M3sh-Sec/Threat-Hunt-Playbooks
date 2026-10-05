@@ -1,4 +1,4 @@
-# H-15 — Credential access: LSASS, NTDS.dit and credential stores (techniques 19–21)
+# H-15 Credential access: LSASS, NTDS.dit and credential stores (techniques 19-21)
 
 **Hypothesis:** The intruder is harvesting credentials by dumping LSASS memory, extracting `NTDS.dit` (via `ntdsutil`, shadow copies or DCSync), and searching file shares, wikis and password vaults for stored secrets.
 
@@ -11,7 +11,7 @@
 3. Run 15C for credential hunting in files and vaults.
 4. Any hit on a domain controller means assuming full domain compromise: plan a double `krbtgt` reset and Tier 0 credential rotation with IR.
 
-**Query 15A — LSASS dumping**
+**Query 15A: LSASS dumping**
 
 Splunk
 
@@ -50,7 +50,7 @@ FROM logs-endpoint.events.api-*, logs-endpoint.events.process-*
 | KEEP @timestamp, host.name, user.name, process.name, process.command_line, process.Ext.api.name
 ```
 
-**Query 15B — NTDS.dit extraction and DCSync**
+**Query 15B: NTDS.dit extraction and DCSync**
 
 Splunk
 
@@ -90,7 +90,7 @@ FROM logs-endpoint.events.process-*, logs-system.security-*
 | KEEP @timestamp, host.name, user.name, event.code, process.command_line
 ```
 
-**Query 15C — credential hunting in files and stores**
+**Query 15C: credential hunting in files and stores**
 
 Splunk: `index=sysmon EventCode=1 (CommandLine="*findstr*/si*pass*" OR CommandLine="*Select-String*-Pattern*pass*" OR CommandLine="*dir*/s*pass*" OR CommandLine="*.kdbx*" OR CommandLine="*unattend.xml*" OR CommandLine="*cmdkey*/list*" OR CommandLine="*vaultcmd*" OR CommandLine="*Login Data*" OR CommandLine="*SharpChrome*" OR CommandLine="*LaZagne*") | stats count values(CommandLine) by host User`
 
@@ -100,9 +100,9 @@ KQL: `DeviceProcessEvents | where Timestamp > ago(30d) | where ProcessCommandLin
 
 Elastic ES|QL: `FROM logs-endpoint.events.process-* | WHERE process.command_line RLIKE """(?i).*(findstr.*/si.*pass|Select-String.*-Pattern.*pass|dir.*/s.*pass|\.kdbx|unattend\.xml|cmdkey.*/list|vaultcmd|Login Data|SharpChrome|LaZagne|SharpDPAPI).*""" | STATS c = COUNT(*), cmds = VALUES(process.command_line) BY host.name, user.name`
 
-Also review SharePoint/Confluence search audit logs for queries like `password`, `vpn`, `MFA`, `vCenter`, `CyberArk`, `break glass` from a single user in a short window — a recurring Scattered Spider step.
+Also review SharePoint/Confluence search audit logs for queries like `password`, `vpn`, `MFA`, `vCenter`, `CyberArk`, `break glass` from a single user in a short window. Scattered Spider does this repeatedly.
 
-**Common false positives:** backup software creating shadow copies on DCs, Azure AD Connect (legitimate DCSync — allowlist its `MSOL_` account), EDR/memory-scanning agents opening LSASS.
+**Common false positives:** backup software creating shadow copies on DCs, Azure AD Connect (which does legitimate DCSync, so allowlist its `MSOL_` account), EDR/memory-scanning agents opening LSASS.
 
 ---
 

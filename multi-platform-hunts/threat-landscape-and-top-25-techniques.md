@@ -1,4 +1,4 @@
-# Threat landscape — who targets insurance, financial and distribution companies
+# Threat landscape: who targets insurance, financial and distribution companies
 
 The groups that matter most for companies like Allstate and UNFI are English-speaking, identity-focused extortion crews (Scattered Spider and the ShinyHunters/"Scattered Lapsus$ Hunters" cluster) and high-volume ransomware programs (Qilin, Akira, DragonForce, Cl0p). Their intrusions start with people and identity rather than malware, so most of the top 25 techniques below are identity, remote-access and living-off-the-land behaviors.
 
@@ -10,7 +10,7 @@ The groups that matter most for companies like Allstate and UNFI are English-spe
 | Jun 2025 | Erie Insurance, Philadelphia Insurance, Aflac | Three insurers hit within five days; [Aflac said social engineering was used](https://cyberscoop.com/aflac-cyberattack-insurance-sector-scattered-spider/) | Hallmarks of Scattered Spider per Google GTIG |
 | Jun 5, 2025 | UNFI | Systems taken offline across its distribution network; [up to $400M in lost sales](https://cyberscoop.com/united-natural-foods-cyberattack-400-million/) | Not officially attributed; [reporting links it to the Scattered Spider spree](https://securityboulevard.com/2025/06/united-natural-foods-hack-richixbw/) |
 | Mid-2025 to early 2026 | Many Salesforce customers incl. insurers | Vishing + malicious connected apps; stolen Drift OAuth tokens | UNC6040 / UNC6395 (ShinyHunters cluster) |
-| 2020–2021 | National General (Allstate subsidiary) | [Bots harvested driver's license numbers](https://ag.ny.gov/press-release/2025/attorney-general-james-sues-national-general-and-allstate-insurance-failing) from quote websites, \~199,000 people across two breaches | Unattributed automated attacks |
+| 2020-2021 | National General (Allstate subsidiary) | [Bots harvested driver's license numbers](https://ag.ny.gov/press-release/2025/attorney-general-james-sues-national-general-and-allstate-insurance-failing) from quote websites, \~199,000 people across two breaches | Unattributed automated attacks |
 
 **Most active groups**
 
@@ -33,7 +33,7 @@ Selection is based on the CISA Scattered Spider advisory, the vendor sector repo
 | 1 | Vishing / help-desk social engineering | T1566.004 | 9 |
 | 2 | Phishing links and adversary-in-the-middle credential/session theft | T1566.002, T1557 | 9 |
 | 3 | MFA request generation (push bombing) | T1621 | 9 |
-| 4 | Valid accounts — domain and cloud | T1078.002, T1078.004 | 9 |
+| 4 | Valid accounts (domain and cloud) | T1078.002, T1078.004 | 9 |
 | 5 | Attacker-registered MFA method or device | T1556.006, T1098.005 | 9 (and 5) |
 | 6 | Exploit public-facing application | T1190 | 10 |
 | 7 | External remote services (VPN, Citrix, RDP gateway) | T1133 | 10 |

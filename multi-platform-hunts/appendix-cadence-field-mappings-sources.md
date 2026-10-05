@@ -1,4 +1,4 @@
-# Appendix — cadence, field mappings, porting notes, triage and sources
+# Appendix: cadence, field mappings, porting notes, triage and sources
 
 **Suggested cadence and priority**
 
@@ -6,18 +6,18 @@ Priority reflects what the most active groups against insurers and distributors 
 
 | Hunt | Priority | Cadence | Convert to detection? |
 | --- | --- | --- | --- |
-| 9 Identity takeover | P1 | Weekly | Yes — push bombing, reset → new-IP sign-in |
-| 5 Azure/Entra persistence | P1 | Weekly | Yes — federation changes, app credentials, MFA added after reset |
-| 8 Salesforce | P1 | Weekly | Yes — unknown connected app, bulk export |
-| 11 RMM and tunnels | P1 | Weekly | Yes — unapproved tool execution |
-| 13 Accounts and trust | P1 | Weekly | Yes — privileged group adds, new IdP |
-| 15 Credential access | P1 | Weekly | Yes — DCSync, NTDS, LSASS |
-| 17 Exfil and impact | P1 | Weekly | Yes — shadow deletion, rclone |
+| 9 Identity takeover | P1 | Weekly | Yes: push bombing, reset → new-IP sign-in |
+| 5 Azure/Entra persistence | P1 | Weekly | Yes: federation changes, app credentials, MFA added after reset |
+| 8 Salesforce | P1 | Weekly | Yes: unknown connected app, bulk export |
+| 11 RMM and tunnels | P1 | Weekly | Yes: unapproved tool execution |
+| 13 Accounts and trust | P1 | Weekly | Yes: privileged group adds, new IdP |
+| 15 Credential access | P1 | Weekly | Yes: DCSync, NTDS, LSASS |
+| 17 Exfil and impact | P1 | Weekly | Yes: shadow deletion, rclone |
 | 4 AWS, 6 GCP, 7 OpenShift | P2 | Bi-weekly | Yes for external trust, SA keys, cluster-admin bindings |
-| 10 Exposed services | P2 | Bi-weekly, plus on every new KEV for your edge stack | Yes — web server spawning shells |
-| 14 Defense evasion | P2 | Bi-weekly | Yes — tamper and log clearing |
-| 1 DLL side-loading, 2 Windows persistence, 3 Linux persistence | P2 | Monthly | Partially — after allowlists mature |
-| 12 Execution, 16 Discovery/lateral | P3 | Monthly | Partially — high-confidence patterns only |
+| 10 Exposed services | P2 | Bi-weekly, plus on every new KEV for your edge stack | Yes: web server spawning shells |
+| 14 Defense evasion | P2 | Bi-weekly | Yes: tamper and log clearing |
+| 1 DLL side-loading, 2 Windows persistence, 3 Linux persistence | P2 | Monthly | Partially, once allowlists mature |
+| 12 Execution, 16 Discovery/lateral | P3 | Monthly | Partially, high-confidence patterns only |
 
 **Cross-platform field mapping (endpoint)**
 
@@ -52,20 +52,20 @@ Priority reflects what the most active groups against insurers and distributors 
 
 **Sources**
 
-- [CISA AA23-320A — Scattered Spider (updated July 29, 2025)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a)
-- [Google GTIG — The Cost of a Call: From Voice Phishing to Data Extortion (UNC6040)](https://cloud.google.com/blog/topics/threat-intelligence/voice-phishing-data-extortion)
-- [Google GTIG — UNC6040 Proactive Hardening Recommendations](https://cloud.google.com/blog/topics/threat-intelligence/unc6040-proactive-hardening-recommendations)
-- [Mitiga — ShinyHunters and UNC6395: Inside the Salesforce and Salesloft Breaches](https://www.mitiga.io/blog/shinyhunters-and-unc6395-inside-the-salesforce-and-salesloft-breaches)
+- [CISA AA23-320A: Scattered Spider (updated July 29, 2025)](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a)
+- [Google GTIG: The Cost of a Call: From Voice Phishing to Data Extortion (UNC6040)](https://cloud.google.com/blog/topics/threat-intelligence/voice-phishing-data-extortion)
+- [Google GTIG: UNC6040 Proactive Hardening Recommendations](https://cloud.google.com/blog/topics/threat-intelligence/unc6040-proactive-hardening-recommendations)
+- [Mitiga: ShinyHunters and UNC6395: Inside the Salesforce and Salesloft Breaches](https://www.mitiga.io/blog/shinyhunters-and-unc6395-inside-the-salesforce-and-salesloft-breaches)
 - [CrowdStrike 2026 Financial Services Threat Landscape Report (blog)](https://www.crowdstrike.com/en-us/blog/crowdstrike-2026-financial-services-threat-landscape-report/) and [press release](https://www.crowdstrike.com/en-us/press-releases/crowdstrike-2026-financial-services-threat-landscape-report/)
-- [Intel 471 — Follow the Money: The Financial Sector's Threat Landscape in 2026](https://www.intel471.com/blog/follow-the-money-the-financial-sectors-threat-landscape-in-2026)
-- [Specops — Top 3 Threat Actors Targeting the Insurance Industry in 2026](https://specopssoft.com/blog/top-threat-actors-targeting-insurance-industry/)
-- [CyberScoop — Aflac duped by social-engineering attack](https://cyberscoop.com/aflac-cyberattack-insurance-sector-scattered-spider/)
-- [CyberScoop — United Natural Foods loses up to $400M in sales after cyberattack](https://cyberscoop.com/united-natural-foods-cyberattack-400-million/)
-- [Security Boulevard — UNFI hack and Scattered Spider](https://securityboulevard.com/2025/06/united-natural-foods-hack-richixbw/)
-- [Insurance Business — Allstate breach claim](https://www.insurancebusinessmag.com/us/news/cyber/allstate-breach-claim-raises-questions-about-scope-of-exposure-584600.aspx)
-- [ClaimDepot — Allstate data breach notice summary (2026)](https://www.claimdepot.com/data-breach/allstate-2026)
-- [New York Attorney General — National General and Allstate lawsuit](https://ag.ny.gov/press-release/2025/attorney-general-james-sues-national-general-and-allstate-insurance-failing)
-- [LOLDrivers — vulnerable driver list](https://www.loldrivers.io/)
+- [Intel 471: Follow the Money: The Financial Sector's Threat Landscape in 2026](https://www.intel471.com/blog/follow-the-money-the-financial-sectors-threat-landscape-in-2026)
+- [Specops: Top 3 Threat Actors Targeting the Insurance Industry in 2026](https://specopssoft.com/blog/top-threat-actors-targeting-insurance-industry/)
+- [CyberScoop: Aflac duped by social-engineering attack](https://cyberscoop.com/aflac-cyberattack-insurance-sector-scattered-spider/)
+- [CyberScoop: United Natural Foods loses up to $400M in sales after cyberattack](https://cyberscoop.com/united-natural-foods-cyberattack-400-million/)
+- [Security Boulevard: UNFI hack and Scattered Spider](https://securityboulevard.com/2025/06/united-natural-foods-hack-richixbw/)
+- [Insurance Business: Allstate breach claim](https://www.insurancebusinessmag.com/us/news/cyber/allstate-breach-claim-raises-questions-about-scope-of-exposure-584600.aspx)
+- [ClaimDepot: Allstate data breach notice summary (2026)](https://www.claimdepot.com/data-breach/allstate-2026)
+- [New York Attorney General: National General and Allstate lawsuit](https://ag.ny.gov/press-release/2025/attorney-general-james-sues-national-general-and-allstate-insurance-failing)
+- [LOLDrivers: vulnerable driver list](https://www.loldrivers.io/)
 
 ---
 
